@@ -1,12 +1,23 @@
 {
-    "name": "laravel/laravel",
+    "name": "rolling-stock-management/rsms-backend",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Rolling Stock Management System backend.",
     "keywords": [
-        "framework",
-        "laravel"
+        "laravel",
+        "rolling-stock",
+        "rolling",
+        "stock",
+        "train",
+        "management"
     ],
-    "license": "MIT",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Stoyan Haydushki",
+            "email": "s.haidushki@gmail.com",
+            "role": "Developer"
+        }
+    ],
     "require": {
         "php": "^7.3|^8.0",
         "fideloper/proxy": "^4.4",

@@ -18,8 +18,7 @@ class PermissionPolicy
      */
     public function viewAny(User $user)
     {
-        //return $user->hasPermission('permission-viewAny');
-        return true;
+        return $user->hasPermission('permission-viewAny');
     }
 
     /**

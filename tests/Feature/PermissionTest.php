@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
+use Database\Seeders\Permissions\PermissionPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
@@ -13,6 +15,17 @@ use Tests\TestCase;
 class PermissionTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->user = User::factory()->create();
+        Role::factory()->create();
+        $this->user->roles()->sync(1);
+        $this->seed(PermissionPermissionsSeeder::class);
+    }
 
     /**
      * Test user must be logged in in order to see a list of the permissions.
@@ -32,8 +45,13 @@ class PermissionTest extends TestCase
      */
     public function testUserWithoutPermissionCannotGetPermissionsList()
     {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
         $response = $this->get('api/permissions');
-        $this->fail('Test not implemented.'); //TODO: Add test and logic.
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -44,13 +62,14 @@ class PermissionTest extends TestCase
     public function testPermissionsListCanBeRetrieved()
     {
         Sanctum::actingAs(
-            User::factory()->create(),
+            $this->user,
             ['*']
         );
+        $this->user->roles[0]->permissions()->sync(1);
         Permission::factory()->count(3)->create();
         $response = $this->get('api/permissions');
 
         $response->assertStatus(Response::HTTP_OK);
-        $response->assertJsonCount(3, 'data');
+        $response->assertJsonCount(4, 'data');
     }
 }

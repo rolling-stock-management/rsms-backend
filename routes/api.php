@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DepotController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use Illuminate\Http\Request;
@@ -21,6 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
         'index'
     ]);
     Route::apiResource('roles', RoleController::class);
+    Route::apiResource('depots', DepotController::class);
     Route::get('/user', function (Request $request) {
         return $request->user();
     });

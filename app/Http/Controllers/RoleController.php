@@ -34,7 +34,10 @@ class RoleController extends Controller
     {
         $data = $this->validateRequest();
         $role = Role::create($data);
-        $role->permissions()->sync($data['permission_ids']);
+
+        if (array_key_exists('permission_ids',$data)) {
+            $role->permissions()->sync($data['permission_ids']);
+        }
         return (new RoleResource($role))
             ->response()
             ->setStatusCode(Response::HTTP_CREATED);
@@ -62,7 +65,9 @@ class RoleController extends Controller
     {
         $data = $this->validateRequest();
         $role->update($data);
-        $role->permissions()->sync($data['permission_ids']);
+        if (array_key_exists('permission_ids',$data)) {
+            $role->permissions()->sync($data['permission_ids']);
+        }
         return (new RoleResource($role))
             ->response()
             ->setStatusCode(Response::HTTP_OK);

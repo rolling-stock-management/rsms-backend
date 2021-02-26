@@ -20,7 +20,7 @@ class DepotController extends Controller
      */
     public function index()
     {
-        $depot = Depot::all();
+        $depot = Depot::paginate(10);
         return DepotResource::collection($depot);
     }
 

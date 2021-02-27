@@ -37,6 +37,7 @@ class UserStoreRequest extends FormRequest
                 Rule::unique(User::class),
             ],
             'password' => $this->passwordRules(),
+            'role_ids' => ['sometimes', 'array']
         ];
     }
 }

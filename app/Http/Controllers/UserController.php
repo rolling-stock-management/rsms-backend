@@ -47,6 +47,9 @@ class UserController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+        if (array_key_exists('role_ids', $data)) {
+            $user->roles()->sync($data['role_ids']);
+        }
 
         return (new UserResource($user))
             ->response()
@@ -75,6 +78,10 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $user->update($data);
+
+        if (array_key_exists('role_ids', $data)) {
+            $user->roles()->sync($data['role_ids']);
+        }
 
         return (new UserResource($user))
             ->response()

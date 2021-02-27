@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Depot;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -21,6 +22,7 @@ class UserResource extends JsonResource
                 'email' => $this->email,
                 'verified_email' => $this->email_verified_at ? true : false,
                 'roles' => RoleResource::collection($this->roles()->get()),
+                'depot' => new DepotResource($this->depot),
                 'created_at' => $this->created_at->format('d.m.Y h:i:s'),
                 'updated_at' => $this->updated_at->format('d.m.Y h:i:s')
             ]

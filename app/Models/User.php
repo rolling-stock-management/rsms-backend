@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'depot_id'
     ];
 
     /**
@@ -50,6 +51,14 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * Get the depot that the user belongs to.
+     */
+    public function depot()
+    {
+        return $this->belongsTo(Depot::class);
     }
 
     /**

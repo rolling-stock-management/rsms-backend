@@ -36,7 +36,8 @@ class UserUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class),
             ],
-            'role_ids' => ['sometimes', 'array']
+            'role_ids' => ['sometimes', 'array'],
+            'depot_id' => ['sometimes', 'nullable', 'integer', 'exists:depots,id'],
         ];
     }
 }

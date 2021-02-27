@@ -46,7 +46,9 @@ class UserController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'depot_id' => array_key_exists('depot_id', $data) ? $data['depot_id'] : null
         ]);
+
         if (array_key_exists('role_ids', $data)) {
             $user->roles()->sync($data['role_ids']);
         }

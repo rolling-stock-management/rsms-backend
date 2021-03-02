@@ -30,7 +30,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class);
     Route::apiResource('passenger-interior-types', PassengerInteriorTypeController::class);
     Route::apiResource('passenger-wagon-types', PassengerWagonTypeController::class);
-    Route::get('/user', function (Request $request) {
-        return Auth::user()->with('roles.permissions')->get();
+    Route::get('/auth-user', function (Request $request) {
+        $id = Auth::id();
+        return \App\Models\User::with('roles.permissions')->find($id);
     });
 });

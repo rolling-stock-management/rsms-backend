@@ -6,6 +6,7 @@ use App\Http\Controllers\PassengerInteriorTypeController;
 use App\Http\Controllers\PassengerWagonTypeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('passenger-interior-types', PassengerInteriorTypeController::class);
     Route::apiResource('passenger-wagon-types', PassengerWagonTypeController::class);
     Route::apiResource('freight-wagon-types', FreightWagonTypeController::class);
+    Route::apiResource('statuses', StatusController::class);
     Route::get('/auth-user', function (Request $request) {
         $id = Auth::id();
         return \App\Models\User::with('roles.permissions')->find($id);

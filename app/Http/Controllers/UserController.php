@@ -29,8 +29,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $depot = User::paginate(10);
-        return UserResource::collection($depot);
+        $user = User::paginate(10);
+        return UserResource::collection($user);
     }
 
     /**

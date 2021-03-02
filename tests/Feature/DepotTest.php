@@ -158,6 +158,24 @@ class DepotTest extends TestCase
     }
 
     /**
+     * Test depot no-pagination option.
+     *
+     * @return void
+     */
+    public function testDepotPaginationCanBeTurnedOff()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        Depot::factory()->count(11)->create();
+        $this->user->roles[0]->permissions()->sync([1]);
+        $response = $this->get('api/depots?no-pagination=1');
+
+        $response->assertJsonCount(11, 'data');
+    }
+
+    /**
      * Test user must have the 'depot-view' permission in order to view a depot.
      *
      * @return void

@@ -20,8 +20,14 @@ class DepotController extends Controller
      */
     public function index()
     {
-        $depot = Depot::paginate(10);
-        return DepotResource::collection($depot);
+        if (request()->has('no-pagination') && request('no-pagination')) {
+            $depots = Depot::all();
+        }
+        else
+        {
+            $depots = Depot::paginate(10);
+        }
+        return DepotResource::collection($depots);
     }
 
     /**

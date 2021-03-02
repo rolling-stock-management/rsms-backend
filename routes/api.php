@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DepotController;
+use App\Http\Controllers\FreightWagonTypeController;
 use App\Http\Controllers\PassengerInteriorTypeController;
 use App\Http\Controllers\PassengerWagonTypeController;
 use App\Http\Controllers\PermissionController;
@@ -30,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class);
     Route::apiResource('passenger-interior-types', PassengerInteriorTypeController::class);
     Route::apiResource('passenger-wagon-types', PassengerWagonTypeController::class);
+    Route::apiResource('freight-wagon-types', FreightWagonTypeController::class);
     Route::get('/auth-user', function (Request $request) {
         $id = Auth::id();
         return \App\Models\User::with('roles.permissions')->find($id);

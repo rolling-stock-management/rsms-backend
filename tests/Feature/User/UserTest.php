@@ -239,7 +239,6 @@ class UserTest extends TestCase
         $user = User::find(2);
 
         $this->assertEquals($this->data['name'], $user->name);
-        $this->assertEquals($this->data['email'], $user->email);
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson([
             'data' => [

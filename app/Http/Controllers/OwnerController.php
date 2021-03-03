@@ -97,7 +97,7 @@ class OwnerController extends Controller
     {
         return request()->validate([
             'name' => ['required', 'string'],
-            'note' => ['sometimes', 'string']
+            'note' => ['sometimes', 'string', 'nullable']
         ]);
     }
 }

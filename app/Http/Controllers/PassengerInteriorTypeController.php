@@ -99,7 +99,7 @@ class PassengerInteriorTypeController extends Controller
     {
         return request()->validate([
             'name' => ['required', 'string'],
-            'description' => ['sometimes', 'required', 'string']
+            'description' => ['sometimes', 'string', 'nullable']
         ]);
     }
 }

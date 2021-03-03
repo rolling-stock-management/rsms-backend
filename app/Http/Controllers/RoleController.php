@@ -94,7 +94,7 @@ class RoleController extends Controller
     {
         return request()->validate([
             'name' => 'required|string',
-            'permission_ids' => 'sometimes|required|array'
+            'permission_ids' => ['sometimes', 'array', 'nullable']
         ]);
     }
 }

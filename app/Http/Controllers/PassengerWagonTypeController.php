@@ -99,7 +99,7 @@ class PassengerWagonTypeController extends Controller
     {
         return request()->validate([
             'name' => ['required', 'string'],
-            'description' => ['sometimes', 'required', 'string'],
+            'description' => ['sometimes', 'string', 'nullable'],
             'interior_type_id' => ['required', 'integer', 'exists:App\Models\PassengerInteriorType,id'],
             'repair_valid_for' => ['required', 'integer']
         ]);

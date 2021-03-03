@@ -99,7 +99,7 @@ class FreightWagonTypeController extends Controller
     {
         return request()->validate([
             'name' => ['required', 'string'],
-            'description' => ['sometimes', 'string'],
+            'description' => ['sometimes', 'string', 'nullable'],
         ]);
     }
 }

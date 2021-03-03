@@ -91,7 +91,7 @@ class DepotController extends Controller
     {
         return request()->validate([
             'name' => 'required|string',
-            'note' => 'sometimes|required|string'
+            'note' => ['sometimes', 'string', 'nullable']
         ]);
     }
 }

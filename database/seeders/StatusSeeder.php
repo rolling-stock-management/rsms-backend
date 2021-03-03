@@ -15,7 +15,7 @@ class StatusSeeder extends Seeder
     public function run()
     {
         foreach ($this->data() as $data) {
-            Status::factory()->create(['name' => $data['name'], 'description' => $data['description']]);
+            Status::factory()->create(['name' => $data['name']]);
         }
     }
 

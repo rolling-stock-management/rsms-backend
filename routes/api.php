@@ -10,6 +10,7 @@ use App\Http\Controllers\RepairTypeController;
 use App\Http\Controllers\RepairWorkshopController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\TractiveUnitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('repair-types', RepairTypeController::class);
     Route::apiResource('owners', OwnerController::class);
     Route::apiResource('repair-workshops', RepairWorkshopController::class);
+    Route::apiResource('tractive-units', TractiveUnitController::class);
     Route::get('/auth-user', function (Request $request) {
         $id = Auth::id();
         return \App\Models\User::with('roles.permissions')->find($id);

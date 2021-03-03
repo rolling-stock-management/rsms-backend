@@ -7,6 +7,7 @@ use App\Http\Controllers\PassengerInteriorTypeController;
 use App\Http\Controllers\PassengerWagonTypeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RepairTypeController;
+use App\Http\Controllers\RepairWorkshopController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
@@ -38,6 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('statuses', StatusController::class);
     Route::apiResource('repair-types', RepairTypeController::class);
     Route::apiResource('owners', OwnerController::class);
+    Route::apiResource('repair-workshops', RepairWorkshopController::class);
     Route::get('/auth-user', function (Request $request) {
         $id = Auth::id();
         return \App\Models\User::with('roles.permissions')->find($id);

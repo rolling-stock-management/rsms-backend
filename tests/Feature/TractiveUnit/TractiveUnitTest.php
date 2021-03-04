@@ -111,8 +111,8 @@ class TractiveUnitTest extends TestCase
                 'axle_arrangement' => $tractiveUnit->axle_arrangement,
                 'length' => $tractiveUnit->length,
                 'brake_marking' => $tractiveUnit->brake_marking,
-                'repair_date' => $tractiveUnit->repair_date->format('d.m.Y h:i:s'),
-                'repair_valid_until' => $tractiveUnit->repair_valid_until->format('d.m.Y h:i:s'),
+                'repair_date' => $tractiveUnit->repair_date->format('Y-m-d'),
+                'repair_valid_until' => $tractiveUnit->repair_valid_until->format('Y-m-d'),
                 'other_info' => $tractiveUnit->other_info,
                 'created_at' => $tractiveUnit->created_at->format('d.m.Y h:i:s'),
                 'updated_at' => $tractiveUnit->updated_at->format('d.m.Y h:i:s')
@@ -198,8 +198,8 @@ class TractiveUnitTest extends TestCase
                 'axle_arrangement' => $tractiveUnit->axle_arrangement,
                 'length' => $tractiveUnit->length,
                 'brake_marking' => $tractiveUnit->brake_marking,
-                'repair_date' => $tractiveUnit->repair_date->format('d.m.Y h:i:s'),
-                'repair_valid_until' => $tractiveUnit->repair_valid_until->format('d.m.Y h:i:s'),
+                'repair_date' => $tractiveUnit->repair_date->format('Y-m-d'),
+                'repair_valid_until' => $tractiveUnit->repair_valid_until->format('Y-m-d'),
                 'other_info' => $tractiveUnit->other_info,
                 'created_at' => $tractiveUnit->created_at->format('d.m.Y h:i:s'),
                 'updated_at' => $tractiveUnit->updated_at->format('d.m.Y h:i:s')
@@ -266,8 +266,8 @@ class TractiveUnitTest extends TestCase
                 'axle_arrangement' => $tractiveUnit->axle_arrangement,
                 'length' => $tractiveUnit->length,
                 'brake_marking' => $tractiveUnit->brake_marking,
-                'repair_date' => $tractiveUnit->repair_date->format('d.m.Y h:i:s'),
-                'repair_valid_until' => $tractiveUnit->repair_valid_until->format('d.m.Y h:i:s'),
+                'repair_date' => $tractiveUnit->repair_date->format('Y-m-d'),
+                'repair_valid_until' => $tractiveUnit->repair_valid_until->format('Y-m-d'),
                 'other_info' => $tractiveUnit->other_info,
                 'created_at' => $tractiveUnit->created_at->format('d.m.Y h:i:s'),
                 'updated_at' => $tractiveUnit->updated_at->format('d.m.Y h:i:s')

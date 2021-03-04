@@ -43,12 +43,12 @@ class TractiveUnit extends Model
     /**
      * Set the repair date as an instance of Carbon
      *
-     * @param string $value
+     * @param $value
      * @return void
      */
-    public function setRepairDateAttribute(string $value)
+    public function setRepairDateAttribute($value)
     {
-        if ($value == '') {
+        if ($value == null || $value == '') {
             $this->attributes['repair_date'] = null;
         } else {
             $this->attributes['repair_date'] = Carbon::parse($value);
@@ -58,12 +58,12 @@ class TractiveUnit extends Model
     /**
      * Set the repair valid until date as an instance of Carbon
      *
-     * @param string $value
+     * @param $value
      * @return void
      */
-    public function setRepairValidUntilAttribute(string $value)
+    public function setRepairValidUntilAttribute($value)
     {
-        if ($value == '') {
+        if ($value == null || $value == '') {
             $this->attributes['repair_valid_until'] = null;
         } else {
             $this->attributes['repair_valid_until'] = $value;

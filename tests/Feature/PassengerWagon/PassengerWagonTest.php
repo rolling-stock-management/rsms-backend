@@ -114,8 +114,8 @@ class PassengerWagonTest extends TestCase
                 'max_speed' => $passengerWagon->max_speed,
                 'length' => $passengerWagon->length,
                 'brake_marking' => $passengerWagon->brake_marking,
-                'repair_date' => $passengerWagon->repair_date->format('d.m.Y h:i:s'),
-                'repair_valid_until' => $passengerWagon->repair_valid_until->format('d.m.Y h:i:s'),
+                'repair_date' => $passengerWagon->repair_date->format('Y-m-d'),
+                'repair_valid_until' => $passengerWagon->repair_valid_until->format('Y-m-d'),
                 'other_info' => $passengerWagon->other_info,
                 'created_at' => $passengerWagon->created_at->format('d.m.Y h:i:s'),
                 'updated_at' => $passengerWagon->updated_at->format('d.m.Y h:i:s')
@@ -201,8 +201,8 @@ class PassengerWagonTest extends TestCase
                 'max_speed' => $passengerWagon->max_speed,
                 'length' => $passengerWagon->length,
                 'brake_marking' => $passengerWagon->brake_marking,
-                'repair_date' => $passengerWagon->repair_date->format('d.m.Y h:i:s'),
-                'repair_valid_until' => $passengerWagon->repair_valid_until->format('d.m.Y h:i:s'),
+                'repair_date' => $passengerWagon->repair_date->format('Y-m-d'),
+                'repair_valid_until' => $passengerWagon->repair_valid_until->format('Y-m-d'),
                 'other_info' => $passengerWagon->other_info,
                 'created_at' => $passengerWagon->created_at->format('d.m.Y h:i:s'),
                 'updated_at' => $passengerWagon->updated_at->format('d.m.Y h:i:s')
@@ -268,8 +268,8 @@ class PassengerWagonTest extends TestCase
                 'max_speed' => $passengerWagon->max_speed,
                 'length' => $passengerWagon->length,
                 'brake_marking' => $passengerWagon->brake_marking,
-                'repair_date' => $passengerWagon->repair_date->format('d.m.Y h:i:s'),
-                'repair_valid_until' => $passengerWagon->repair_valid_until->format('d.m.Y h:i:s'),
+                'repair_date' => $passengerWagon->repair_date->format('Y-m-d'),
+                'repair_valid_until' => $passengerWagon->repair_valid_until->format('Y-m-d'),
                 'other_info' => $passengerWagon->other_info,
                 'created_at' => $passengerWagon->created_at->format('d.m.Y h:i:s'),
                 'updated_at' => $passengerWagon->updated_at->format('d.m.Y h:i:s')

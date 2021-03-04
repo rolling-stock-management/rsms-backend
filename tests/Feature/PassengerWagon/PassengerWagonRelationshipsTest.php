@@ -73,7 +73,7 @@ class PassengerWagonRelationshipsTest extends TestCase
         $this->assertCount(1, PassengerWagon::all());
         $response->assertStatus(Response::HTTP_CREATED);
 
-        $this->assertNotNull($response['data']['depot']);
+        $this->assertNotNull($response['data']['type']);
         $this->assertEquals('19-40', $passengerWagon->type->name);
     }
 

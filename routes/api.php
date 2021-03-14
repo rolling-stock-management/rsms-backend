@@ -6,6 +6,7 @@ use App\Http\Controllers\FreightWagonTypeController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\PassengerInteriorTypeController;
 use App\Http\Controllers\PassengerWagonController;
+use App\Http\Controllers\PassengerWagonSearchController;
 use App\Http\Controllers\PassengerWagonTypeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RepairTypeController;
@@ -46,6 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('tractive-units', TractiveUnitController::class);
     Route::apiResource('passenger-wagons', PassengerWagonController::class);
     Route::apiResource('freight-wagons', FreightWagonController::class);
+    Route::post('passenger-wagons-search', [PassengerWagonSearchController::class, 'index']);
     Route::get('/auth-user', function (Request $request) {
         $id = Auth::id();
         return \App\Models\User::with('roles.permissions')->find($id);

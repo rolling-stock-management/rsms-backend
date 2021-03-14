@@ -5,10 +5,12 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class PassengerWagon extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -100,6 +102,19 @@ class PassengerWagon extends Model
         $k = substr($this->number, 11);
         $number = $ef . '-' . $gh . ' ' . $xyz . '-' . $k;
         return $number;
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'short_number' => $this->getShortStylizedNumber()
+        ];
     }
 
     /**

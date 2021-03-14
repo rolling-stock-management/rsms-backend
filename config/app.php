@@ -165,6 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
+        TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -175,6 +176,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
+        Laravel\Scout\ScoutServiceProvider::class
 
     ],
 

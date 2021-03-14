@@ -103,8 +103,12 @@ class RolePermissionTest extends TestCase
      */
     public function testPermissionIdsMustBeAnArray()
     {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
         $response = $this->post('api/roles', array_merge($this->data, ['permission_ids' => (object)null]));
 
-        $response->assertSessionHasErrors('permission_ids'); //TODO: This doesn't pass for some reason
+        $response->assertSessionHasErrors(['permission_ids']);
     }
 }

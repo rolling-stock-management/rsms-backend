@@ -26,7 +26,7 @@ class TractiveUnitController extends Controller
      */
     public function index()
     {
-        $tractiveUnits = TractiveUnit::paginate(10);
+        $tractiveUnits = TractiveUnit::allTractiveUnits();
 
         return TractiveUnitResource::collection($tractiveUnits);
     }

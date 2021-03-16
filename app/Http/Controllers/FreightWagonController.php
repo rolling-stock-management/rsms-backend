@@ -26,7 +26,7 @@ class FreightWagonController extends Controller
      */
     public function index()
     {
-        $freightWagons = FreightWagon::paginate(10);
+        $freightWagons = FreightWagon::allFreightWagons();
 
         return FreightWagonResource::collection($freightWagons);
     }

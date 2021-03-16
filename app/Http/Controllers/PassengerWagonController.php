@@ -21,7 +21,7 @@ class PassengerWagonController extends Controller
      */
     public function index()
     {
-        $passengerWagons = PassengerWagon::paginate(10);
+        $passengerWagons = PassengerWagon::allPassengerWagons();
 
         return PassengerWagonResource::collection($passengerWagons);
     }

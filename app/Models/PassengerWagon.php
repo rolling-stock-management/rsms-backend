@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Http\QueryFilters\PassengerWagon as Filters;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pipeline\Pipeline;
 use Laravel\Scout\Searchable;
 
 class PassengerWagon extends Model
@@ -115,6 +117,27 @@ class PassengerWagon extends Model
             'id' => $this->id,
             'short_number' => $this->getShortStylizedNumber()
         ];
+    }
+
+    /**
+     * Get all records through filtering pipelines and paginate the result.
+     *
+     * @return mixed
+     */
+    public static function allPassengerWagons()
+    {
+        return app(Pipeline::class)
+            ->send(PassengerWagon::query())
+            ->through([
+                Filters\DepotId::class,
+                Filters\RepairValidUntilThisMonth::class,
+                Filters\RepairWorkshopId::class,
+                Filters\Sort::class,
+                Filters\StatusId::class,
+                Filters\TypeId::class,
+            ])
+            ->thenReturn()
+            ->paginate(10);
     }
 
     /**

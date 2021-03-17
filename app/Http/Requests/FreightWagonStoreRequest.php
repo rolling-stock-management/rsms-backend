@@ -39,6 +39,7 @@ class FreightWagonStoreRequest extends FormRequest
             'owner_id' => ['required', 'integer', 'exists:owners,id'],
             'status_id' => ['required', 'integer', 'exists:statuses,id'],
             'repair_date' => ['sometimes', 'date', 'nullable'],
+            'repair_valid_until' => ['sometimes', 'date', 'nullable'],
             'repair_workshop_id' => ['sometimes', 'integer', 'nullable', 'exists:repair_workshops,id'],
             'depot_id' => ['sometimes', 'integer', 'nullable', 'exists:depots,id'],
             'other_info' => ['sometimes', 'string', 'nullable']

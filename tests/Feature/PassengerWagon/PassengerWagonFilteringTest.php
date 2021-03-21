@@ -8,7 +8,6 @@ use App\Models\Role;
 use App\Models\User;
 use Database\Seeders\Permissions\PassengerWagonPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -140,6 +139,22 @@ class PassengerWagonFilteringTest extends TestCase
             ['*']
         );
         $response = $this->get('api/passenger-wagons' . '?type_id=2');
+
+        $response->assertJsonCount(1, 'data');
+    }
+
+    /**
+     * Test passenger wagons can be filtered by owner id.
+     *
+     * @return void
+     */
+    public function testPassengerWagonsCanBeFilteredByOwnerId()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $response = $this->get('api/passenger-wagons' . '?owner_id=2');
 
         $response->assertJsonCount(1, 'data');
     }

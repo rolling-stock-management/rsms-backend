@@ -135,6 +135,7 @@ class PassengerWagon extends Model
                 Filters\Sort::class,
                 Filters\StatusId::class,
                 Filters\TypeId::class,
+                Filters\OwnerId::class,
             ])
             ->thenReturn()
             ->paginate(10);

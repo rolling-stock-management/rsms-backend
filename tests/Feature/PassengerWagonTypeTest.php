@@ -8,7 +8,6 @@ use App\Models\Role;
 use App\Models\User;
 use Database\Seeders\Permissions\PassengerWagonTypePermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -111,6 +110,7 @@ class PassengerWagonTypeTest extends TestCase
         $passengerWagonType = PassengerWagonType::first();
 
         $this->assertCount(1, PassengerWagonType::all());
+        $this->assertNotNull($passengerWagonType->interiorType);
         $response->assertStatus(Response::HTTP_CREATED);
         $this->assertNotNull($response['data']['interior_type']);
     }
@@ -158,12 +158,16 @@ class PassengerWagonTypeTest extends TestCase
      *
      * @return void
      */
-    // TODO: Validation is there but no errors?
-//    public function testPassengerWagonTypeInteriorTypeMustExist()
-//    {
-//        $response = $this->post('api/passenger-wagon-types', array_merge($this->data, ['interior_type_id' => 22]));
-//        $response->assertSessionHasErrors('interior_type_id');
-//    }
+    public function testPassengerWagonTypeInteriorTypeMustExist()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync([3]);
+        $response = $this->post('api/passenger-wagon-types', array_merge($this->data, ['interior_type_id' => 22]));
+        $response->assertSessionHasErrors('interior_type_id');
+    }
 
     /**
      * Test user must have the 'passenger-wagon-type-viewAny' permission in order to see a list of passenger wagon types.

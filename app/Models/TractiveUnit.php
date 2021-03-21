@@ -135,6 +135,7 @@ class TractiveUnit extends Model
                 Filters\RepairWorkshopId::class,
                 Filters\Sort::class,
                 Filters\StatusId::class,
+                Filters\OwnerId::class,
             ])
             ->thenReturn()
             ->paginate(10);

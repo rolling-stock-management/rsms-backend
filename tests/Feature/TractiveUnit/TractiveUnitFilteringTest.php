@@ -113,4 +113,20 @@ class TractiveUnitFilteringTest extends TestCase
         $this->assertEquals('915200435393', $responseAsc->getData()->data[0]->data->number);
         $this->assertEquals('915200440989', $responseDesc->getData()->data[0]->data->number);
     }
+
+    /**
+     * Test tractive units can be filtered by owner id.
+     *
+     * @return void
+     */
+    public function testTractiveUnitsCanBeFilteredByOwnerId()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $response = $this->get('api/tractive-units' . '?owner_id=2');
+
+        $response->assertJsonCount(1, 'data');
+    }
 }

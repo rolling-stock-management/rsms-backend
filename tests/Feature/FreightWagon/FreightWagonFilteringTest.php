@@ -130,4 +130,20 @@ class FreightWagonFilteringTest extends TestCase
 
         $response->assertJsonCount(1, 'data');
     }
+
+    /**
+     * Test freight wagons can be filtered by owner id.
+     *
+     * @return void
+     */
+    public function testFreightWagonsCanBeFilteredByOwnerId()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $response = $this->get('api/freight-wagons' . '?owner_id=2');
+
+        $response->assertJsonCount(1, 'data');
+    }
 }

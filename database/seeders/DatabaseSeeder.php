@@ -10,6 +10,7 @@ use Database\Seeders\Permissions\PassengerInteriorTypePermissionsSeeder;
 use Database\Seeders\Permissions\PassengerWagonPermissionsSeeder;
 use Database\Seeders\Permissions\PassengerWagonTypePermissionsSeeder;
 use Database\Seeders\Permissions\PermissionPermissionsSeeder;
+use Database\Seeders\Permissions\RepairPermissionsSeeder;
 use Database\Seeders\Permissions\RepairTypePermissionsSeeder;
 use Database\Seeders\Permissions\RepairWorkshopPermissionsSeeder;
 use Database\Seeders\Permissions\RolePermissionsSeeder;
@@ -42,6 +43,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TractiveUnitPermissionsSeeder::class);
         $this->call(PassengerWagonPermissionsSeeder::class);
         $this->call(FreightWagonPermissionsSeeder::class);
+        $this->call(RepairPermissionsSeeder::class);
         //Models
         $this->call(RoleSeeder::class);
         $this->call(DepotSeeder::class);

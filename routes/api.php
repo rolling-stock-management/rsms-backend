@@ -10,6 +10,7 @@ use App\Http\Controllers\PassengerWagonController;
 use App\Http\Controllers\PassengerWagonSearchController;
 use App\Http\Controllers\PassengerWagonTypeController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RepairController;
 use App\Http\Controllers\RepairTypeController;
 use App\Http\Controllers\RepairWorkshopController;
 use App\Http\Controllers\RoleController;
@@ -49,6 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('tractive-units', TractiveUnitController::class);
     Route::apiResource('passenger-wagons', PassengerWagonController::class);
     Route::apiResource('freight-wagons', FreightWagonController::class);
+    Route::apiResource('repairs', RepairController::class);
     Route::post('passenger-wagons-search', [PassengerWagonSearchController::class, 'index']);
     Route::post('freight-wagons-search', [FreightWagonSearchController::class, 'index']);
     Route::post('tractive-units-search', [TractiveUnitSearchController::class, 'index']);

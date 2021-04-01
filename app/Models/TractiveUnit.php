@@ -180,4 +180,14 @@ class TractiveUnit extends Model
     {
         return $this->belongsTo(RepairWorkshop::class);
     }
+
+    /**
+     * Get the repairs of the tractive unit.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function repairs()
+    {
+        return $this->morphMany(Repair::class, 'repairable');
+    }
 }

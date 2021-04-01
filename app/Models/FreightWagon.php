@@ -194,4 +194,14 @@ class FreightWagon extends Model
     {
         return $this->belongsTo(RepairWorkshop::class);
     }
+
+    /**
+     * Get the repairs of the freight wagon.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function repairs()
+    {
+        return $this->morphMany(Repair::class, 'repairable');
+    }
 }

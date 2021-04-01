@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Repair;
 
+use App\Models\PassengerWagon;
 use App\Models\Repair;
 use App\Models\RepairType;
 use App\Models\RepairWorkshop;
@@ -29,10 +30,12 @@ class RepairTest extends TestCase
         $this->seed(RepairPermissionsSeeder::class);
         RepairType::factory()->create();
         RepairWorkshop::factory()->create();
+        PassengerWagon::factory()->create();
         $this->data = [
             'short_description' => 'repair1',
             'type_id' => 1,
             'workshop_id' => 1,
+            'passenger_wagon_id' => 1,
             'description' => 'Some text to serve as a description of the repair...',
             'start_date' => '2021-03-31',
             'end_date' => '2021-04-21',
@@ -270,7 +273,9 @@ class RepairTest extends TestCase
             ['*']
         );
         $this->user->roles[0]->permissions()->sync([4]);
-        $repair = Repair::factory()->create();
+        $repair = Repair::factory()->for(
+            PassengerWagon::factory(), 'repairable'
+        )->create();
         $response = $this->patch('api/repairs/' . $repair->id, $this->data);
         $repair = Repair::first();
 

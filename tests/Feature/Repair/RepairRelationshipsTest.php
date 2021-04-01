@@ -2,10 +2,13 @@
 
 namespace Tests\Feature\Repair;
 
+use App\Models\FreightWagon;
+use App\Models\PassengerWagon;
 use App\Models\Repair;
 use App\Models\RepairType;
 use App\Models\RepairWorkshop;
 use App\Models\Role;
+use App\Models\TractiveUnit;
 use App\Models\User;
 use Database\Seeders\Permissions\RepairPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -29,27 +32,18 @@ class RepairRelationshipsTest extends TestCase
         $this->seed(RepairPermissionsSeeder::class);
         RepairType::factory()->create();
         RepairWorkshop::factory()->create();
+        PassengerWagon::factory()->create();
+        FreightWagon::factory()->create();
+        TractiveUnit::factory()->create();
         $this->data = [
             'short_description' => 'repair1',
             'type_id' => 1,
             'workshop_id' => 1,
+            'passenger_wagon_id' => 1,
             'description' => 'Some text to serve as a description of the repair...',
             'start_date' => '2021-03-31',
             'end_date' => '2021-04-21',
         ];
-    }
-
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
     }
 
     /**
@@ -70,6 +64,25 @@ class RepairRelationshipsTest extends TestCase
                 $response->assertSessionHasErrors($field);
 
                 $response = $this->post('api/repairs', array_merge($this->data, [$field => 'aa']));
+                $response->assertSessionHasErrors($field);
+            });
+    }
+
+    /**
+     * Test repair type_id and workshop_id must exist.
+     *
+     * @return void
+     */
+    public function testRepairTypeAndWorkshopIdsMustExist()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync([3]);
+        collect(['type_id', 'workshop_id'])
+            ->each(function ($field) {
+                $response = $this->post('api/repairs', array_merge($this->data, [$field => 5]));
                 $response->assertSessionHasErrors($field);
             });
     }
@@ -108,7 +121,9 @@ class RepairRelationshipsTest extends TestCase
             ['*']
         );
         $this->user->roles[0]->permissions()->sync([4]);
-        $repair = Repair::factory()->create();
+        $repair = Repair::factory()->for(
+            PassengerWagon::factory(), 'repairable'
+        )->create();
         $response = $this->patch('api/repairs/' . $repair->id, array_merge($this->data, ['type_id' => 2]));
         $repair = Repair::first();
 
@@ -151,12 +166,200 @@ class RepairRelationshipsTest extends TestCase
             ['*']
         );
         $this->user->roles[0]->permissions()->sync([4]);
-        $repair = Repair::factory()->create();
+        $repair = Repair::factory()->for(
+            PassengerWagon::factory(), 'repairable'
+        )->create();
         $response = $this->patch('api/repairs/' . $repair->id, array_merge($this->data, ['workshop_id' => 2]));
         $repair = Repair::first();
 
         $this->assertEquals($this->data['short_description'], $repair->short_description);
         $this->assertEquals(2, $repair->workshop->id);
         $response->assertStatus(Response::HTTP_OK);
+    }
+
+    /**
+     * Test passenger wagon can be assigned to repair.
+     *
+     * @return void
+     */
+    public function testPassengerWagonCanBeAssignedToRepair()
+    {
+        $this->withoutExceptionHandling();
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync(3);
+        $response = $this->post('api/repairs', array_merge($this->data, ['passenger_wagon_id' => 1]));
+        Repair::first();
+
+        $this->assertCount(1, Repair::all());
+        $response->assertStatus(Response::HTTP_CREATED);
+
+        $this->assertNotNull($response['data']['repairable']);
+    }
+
+    /**
+     * Test passenger wagon can be updated on repair.
+     *
+     * @return void
+     */
+    public function testPassengerWagonCanBeUpdatedOnRepair()
+    {
+        $this->withoutExceptionHandling();
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync([4]);
+        $repair = Repair::factory()->for(
+            PassengerWagon::factory(), 'repairable'
+        )->create();
+        $response = $this->patch('api/repairs/' . $repair->id, array_merge($this->data, ['passenger_wagon_id' => 1]));
+        $repair = Repair::first();
+
+        $this->assertEquals($this->data['short_description'], $repair->short_description);
+        $this->assertEquals(1, $repair->repairable->id);
+        $response->assertStatus(Response::HTTP_OK);
+    }
+
+    /**
+     * Test passenger_wagon_id must exist.
+     *
+     * @return void
+     */
+    public function testPassengerWagonIdMustExist()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync(3);
+        $response = $this->post('api/repairs', array_merge($this->data, ['passenger_wagon_id' => 5]));
+        $response->assertSessionHasErrors('passenger_wagon_id');
+    }
+
+    /**
+     * Test freight wagon can be assigned to repair.
+     *
+     * @return void
+     */
+    public function testFreightWagonCanBeAssignedToRepair()
+    {
+        $this->withoutExceptionHandling();
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync(3);
+        $response = $this->post('api/repairs', array_merge($this->data, ['freight_wagon_id' => 1]));
+        Repair::first();
+
+        $this->assertCount(1, Repair::all());
+        $response->assertStatus(Response::HTTP_CREATED);
+
+        $this->assertNotNull($response['data']['repairable']);
+    }
+
+    /**
+     * Test freight wagon can be updated on repair.
+     *
+     * @return void
+     */
+    public function testFreightWagonCanBeUpdatedOnRepair()
+    {
+        $this->withoutExceptionHandling();
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync([4]);
+        $repair = Repair::factory()->for(
+            FreightWagon::factory(), 'repairable'
+        )->create();
+        $response = $this->patch('api/repairs/' . $repair->id, array_merge($this->data, ['freight_wagon_id' => 1]));
+        $repair = Repair::first();
+
+        $this->assertEquals($this->data['short_description'], $repair->short_description);
+        $this->assertEquals(1, $repair->repairable->id);
+        $response->assertStatus(Response::HTTP_OK);
+    }
+
+    /**
+     * Test freight_wagon_id must exist.
+     *
+     * @return void
+     */
+    public function testFreightWagonIdMustExist()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync(3);
+        $response = $this->post('api/repairs', array_merge($this->data, ['freight_wagon_id' => 5]));
+        $response->assertSessionHasErrors('freight_wagon_id');
+    }
+
+    /**
+     * Test tractive unit can be assigned to repair.
+     *
+     * @return void
+     */
+    public function testTractiveUnitCanBeAssignedToRepair()
+    {
+        $this->withoutExceptionHandling();
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync(3);
+        $response = $this->post('api/repairs', array_merge($this->data, ['tractive_unit_id' => 1]));
+        Repair::first();
+
+        $this->assertCount(1, Repair::all());
+        $response->assertStatus(Response::HTTP_CREATED);
+
+        $this->assertNotNull($response['data']['repairable']);
+    }
+
+    /**
+     * Test tractive unit can be updated on repair.
+     *
+     * @return void
+     */
+    public function testTractiveUnitCanBeUpdatedOnRepair()
+    {
+        $this->withoutExceptionHandling();
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync([4]);
+        $repair = Repair::factory()->for(
+            TractiveUnit::factory(), 'repairable'
+        )->create();
+        $response = $this->patch('api/repairs/' . $repair->id, array_merge($this->data, ['tractive_unit_id' => 1]));
+        $repair = Repair::first();
+
+        $this->assertEquals($this->data['short_description'], $repair->short_description);
+        $this->assertEquals(1, $repair->repairable->id);
+        $response->assertStatus(Response::HTTP_OK);
+    }
+
+    /**
+     * Test tractive_unit_id must exist.
+     *
+     * @return void
+     */
+    public function testTractiveUnitIdMustExist()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync(3);
+        $response = $this->post('api/repairs', array_merge($this->data, ['tractive_unit_id' => 5]));
+        $response->assertSessionHasErrors('tractive_unit_id');
     }
 }

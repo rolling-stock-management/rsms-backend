@@ -14,7 +14,7 @@ class Repair extends Model
      *
      * @var array
      */
-    protected $fillable = ['short_description', 'type_id', 'workshop_id', 'start_date', 'end_date', 'description'];
+    protected $fillable = ['short_description', 'type_id', 'workshop_id', 'start_date', 'end_date', 'description', 'repairable_id', 'repairable_type'];
 
     /**
      * The attributes that should be treated as dates.
@@ -41,5 +41,13 @@ class Repair extends Model
     public function workshop()
     {
         return $this->belongsTo(RepairWorkshop::class);
+    }
+
+    /**
+     * Get the parent repairable model.
+     */
+    public function repairable()
+    {
+        return $this->morphTo();
     }
 }

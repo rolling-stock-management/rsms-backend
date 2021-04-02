@@ -27,9 +27,9 @@ class RepairController extends Controller
      */
     public function index()
     {
-        $repair = Repair::paginate(10);
+        $repairs = Repair::allRepairs();
 
-        return RepairResource::collection($repair);
+        return RepairResource::collection($repairs);
     }
 
     /**

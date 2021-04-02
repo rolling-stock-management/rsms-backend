@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Http\QueryFilters\Repair as Filters;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pipeline\Pipeline;
 
 class Repair extends Model
 {
@@ -22,6 +24,22 @@ class Repair extends Model
      * @var array
      */
     protected $dates = ['start_date', 'end_date'];
+
+    /**
+     * Get all records through filtering pipelines and paginate the result.
+     *
+     * @return mixed
+     */
+    public static function allRepairs()
+    {
+        return app(Pipeline::class)
+            ->send(Repair::query())
+            ->through([
+                 Filters\RepairableType::class,
+            ])
+            ->thenReturn()
+            ->paginate(10);
+    }
 
     /**
      * Get the type which the repair belongs to.

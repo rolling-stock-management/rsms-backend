@@ -35,7 +35,13 @@ class Repair extends Model
         return app(Pipeline::class)
             ->send(Repair::query())
             ->through([
-                 Filters\RepairableType::class,
+                Filters\RepairableType::class,
+                Filters\StartDateBefore::class,
+                Filters\StartDateAfter::class,
+                Filters\EndDateBefore::class,
+                Filters\EndDateAfter::class,
+                Filters\TypeId::class,
+                Filters\WorkshopId::class,
             ])
             ->thenReturn()
             ->paginate(10);

@@ -7,7 +7,9 @@ use App\Models\FreightWagon;
 use App\Models\PassengerWagon;
 use App\Models\Repair;
 use App\Models\TractiveUnit;
+use App\Rules\ExistsRepairable;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 class RepairController extends Controller
@@ -43,19 +45,23 @@ class RepairController extends Controller
         $data = $this->validateRequestData();
         $repair = Repair::create($data);
 
-        //TODO: Check refactoring options.
-        if (array_key_exists('passenger_wagon_id',$data)) {
-            $passengerWagon = PassengerWagon::find($data['passenger_wagon_id']);
-            $passengerWagon->repairs()->save($repair);
+        $repairable = null;
+        switch ($data['repairable_type'])
+        {
+            case 1: {
+                $repairable = PassengerWagon::find($data['repairable_id']);
+                break;
+            }
+            case 2: {
+                $repairable = FreightWagon::find($data['repairable_id']);
+                break;
+            }
+            case 3: {
+                $repairable = TractiveUnit::find($data['repairable_id']);
+                break;
+            }
         }
-        if (array_key_exists('freight_wagon_id',$data)) {
-            $freightWagon = FreightWagon::find($data['freight_wagon_id']);
-            $freightWagon->repairs()->save($repair);
-        }
-        if (array_key_exists('tractive_unit_id',$data)) {
-            $tractiveUnit = TractiveUnit::find($data['tractive_unit_id']);
-            $tractiveUnit->repairs()->save($repair);
-        }
+        $repairable->repairs()->save($repair);
 
         return (new RepairResource($repair))
             ->response()
@@ -83,21 +89,8 @@ class RepairController extends Controller
     public function update(Request $request, Repair $repair)
     {
         $data = $this->validateRequestData();
+        unset($data['repairable_type']);
         $repair->update($data);
-
-        //TODO: Check refactoring options.
-        $repairableId = 0;
-        if (array_key_exists('passenger_wagon_id',$data)) {
-            $repairableId = $data['passenger_wagon_id'];
-        }
-        if (array_key_exists('freight_wagon_id',$data)) {
-            $repairableId = $data['freight_wagon_id'];
-        }
-        if (array_key_exists('tractive_unit_id',$data)) {
-            $repairableId = $data['tractive_unit_id'];
-        }
-
-        $repair->update(['repairable_id' => $repairableId]);
 
         return (new RepairResource($repair))
             ->response()
@@ -129,9 +122,8 @@ class RepairController extends Controller
             'type_id' => ['required', 'integer', 'exists:App\Models\RepairType,id'],
             'workshop_id' => ['required', 'integer', 'exists:App\Models\RepairWorkshop,id'],
             'description' => ['sometimes', 'string', 'nullable'],
-            'passenger_wagon_id' => ['exclude_unless:freight_wagon_id,null', 'exclude_unless:tractive_unit_id,null', 'required', 'integer', 'exists:App\Models\PassengerWagon,id'],
-            'freight_wagon_id' => ['exclude_unless:passenger_wagon_id,null', 'exclude_unless:tractive_unit_id,null', 'required', 'integer', 'exists:App\Models\FreightWagon,id'],
-            'tractive_unit_id' => ['exclude_unless:passenger_wagon_id,null', 'exclude_unless:freight_wagon_id,null', 'required', 'integer', 'exists:App\Models\TractiveUnit,id'],
+            'repairable_type' => ['required', Rule::in([1,2,3])],
+            'repairable_id' => ['required', new ExistsRepairable],
             'start_date' => ['required', 'date'],
             'end_date' => ['sometimes', 'date']
         ]);

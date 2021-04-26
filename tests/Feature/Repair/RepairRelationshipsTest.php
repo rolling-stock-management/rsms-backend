@@ -39,7 +39,8 @@ class RepairRelationshipsTest extends TestCase
             'short_description' => 'repair1',
             'type_id' => 1,
             'workshop_id' => 1,
-            'passenger_wagon_id' => 1,
+            'repairable_type' => 1,
+            'repairable_id' => 1,
             'description' => 'Some text to serve as a description of the repair...',
             'start_date' => '2021-03-31',
             'end_date' => '2021-04-21',
@@ -94,7 +95,6 @@ class RepairRelationshipsTest extends TestCase
      */
     public function testTypeCanBeAssignedToRepair()
     {
-        $this->withoutExceptionHandling();
         Sanctum::actingAs(
             $this->user,
             ['*']
@@ -139,7 +139,6 @@ class RepairRelationshipsTest extends TestCase
      */
     public function testWorkshopCanBeAssignedToRepair()
     {
-        $this->withoutExceptionHandling();
         Sanctum::actingAs(
             $this->user,
             ['*']
@@ -184,13 +183,12 @@ class RepairRelationshipsTest extends TestCase
      */
     public function testPassengerWagonCanBeAssignedToRepair()
     {
-        $this->withoutExceptionHandling();
         Sanctum::actingAs(
             $this->user,
             ['*']
         );
         $this->user->roles[0]->permissions()->sync(3);
-        $response = $this->post('api/repairs', array_merge($this->data, ['passenger_wagon_id' => 1]));
+        $response = $this->post('api/repairs', array_merge($this->data, ['repairable_type' => 1, 'repairable_id' => 1]));
         Repair::first();
 
         $this->assertCount(1, Repair::all());
@@ -206,7 +204,6 @@ class RepairRelationshipsTest extends TestCase
      */
     public function testPassengerWagonCanBeUpdatedOnRepair()
     {
-        $this->withoutExceptionHandling();
         Sanctum::actingAs(
             $this->user,
             ['*']
@@ -215,7 +212,7 @@ class RepairRelationshipsTest extends TestCase
         $repair = Repair::factory()->for(
             PassengerWagon::factory(), 'repairable'
         )->create();
-        $response = $this->patch('api/repairs/' . $repair->id, array_merge($this->data, ['passenger_wagon_id' => 1]));
+        $response = $this->patch('api/repairs/' . $repair->id, array_merge($this->data, ['repairable_type' => 1, 'repairable_id' => 1]));
         $repair = Repair::first();
 
         $this->assertEquals($this->data['short_description'], $repair->short_description);
@@ -235,8 +232,8 @@ class RepairRelationshipsTest extends TestCase
             ['*']
         );
         $this->user->roles[0]->permissions()->sync(3);
-        $response = $this->post('api/repairs', array_merge($this->data, ['passenger_wagon_id' => 5]));
-        $response->assertSessionHasErrors('passenger_wagon_id');
+        $response = $this->post('api/repairs', array_merge($this->data, ['repairable_type' => 1, 'repairable_id' => 5]));
+        $response->assertSessionHasErrors('repairable_id');
     }
 
     /**
@@ -246,13 +243,12 @@ class RepairRelationshipsTest extends TestCase
      */
     public function testFreightWagonCanBeAssignedToRepair()
     {
-        $this->withoutExceptionHandling();
         Sanctum::actingAs(
             $this->user,
             ['*']
         );
         $this->user->roles[0]->permissions()->sync(3);
-        $response = $this->post('api/repairs', array_merge($this->data, ['freight_wagon_id' => 1]));
+        $response = $this->post('api/repairs', array_merge($this->data, ['repairable_type' => 2, 'repairable_id' => 1]));
         Repair::first();
 
         $this->assertCount(1, Repair::all());
@@ -268,7 +264,6 @@ class RepairRelationshipsTest extends TestCase
      */
     public function testFreightWagonCanBeUpdatedOnRepair()
     {
-        $this->withoutExceptionHandling();
         Sanctum::actingAs(
             $this->user,
             ['*']
@@ -277,7 +272,7 @@ class RepairRelationshipsTest extends TestCase
         $repair = Repair::factory()->for(
             FreightWagon::factory(), 'repairable'
         )->create();
-        $response = $this->patch('api/repairs/' . $repair->id, array_merge($this->data, ['freight_wagon_id' => 1]));
+        $response = $this->patch('api/repairs/' . $repair->id, array_merge($this->data, ['repairable_type' => 2, 'repairable_id' => 1]));
         $repair = Repair::first();
 
         $this->assertEquals($this->data['short_description'], $repair->short_description);
@@ -297,8 +292,8 @@ class RepairRelationshipsTest extends TestCase
             ['*']
         );
         $this->user->roles[0]->permissions()->sync(3);
-        $response = $this->post('api/repairs', array_merge($this->data, ['freight_wagon_id' => 5]));
-        $response->assertSessionHasErrors('freight_wagon_id');
+        $response = $this->post('api/repairs', array_merge($this->data, ['repairable_type' => 2, 'repairable_id' => 5]));
+        $response->assertSessionHasErrors('repairable_id');
     }
 
     /**
@@ -308,13 +303,12 @@ class RepairRelationshipsTest extends TestCase
      */
     public function testTractiveUnitCanBeAssignedToRepair()
     {
-        $this->withoutExceptionHandling();
         Sanctum::actingAs(
             $this->user,
             ['*']
         );
         $this->user->roles[0]->permissions()->sync(3);
-        $response = $this->post('api/repairs', array_merge($this->data, ['tractive_unit_id' => 1]));
+        $response = $this->post('api/repairs', array_merge($this->data, ['repairable_type' => 3, 'repairable_id' => 1]));
         Repair::first();
 
         $this->assertCount(1, Repair::all());
@@ -330,7 +324,6 @@ class RepairRelationshipsTest extends TestCase
      */
     public function testTractiveUnitCanBeUpdatedOnRepair()
     {
-        $this->withoutExceptionHandling();
         Sanctum::actingAs(
             $this->user,
             ['*']
@@ -339,7 +332,7 @@ class RepairRelationshipsTest extends TestCase
         $repair = Repair::factory()->for(
             TractiveUnit::factory(), 'repairable'
         )->create();
-        $response = $this->patch('api/repairs/' . $repair->id, array_merge($this->data, ['tractive_unit_id' => 1]));
+        $response = $this->patch('api/repairs/' . $repair->id, array_merge($this->data, ['repairable_type' => 3, 'repairable_id' => 1]));
         $repair = Repair::first();
 
         $this->assertEquals($this->data['short_description'], $repair->short_description);
@@ -359,7 +352,7 @@ class RepairRelationshipsTest extends TestCase
             ['*']
         );
         $this->user->roles[0]->permissions()->sync(3);
-        $response = $this->post('api/repairs', array_merge($this->data, ['tractive_unit_id' => 5]));
-        $response->assertSessionHasErrors('tractive_unit_id');
+        $response = $this->post('api/repairs', array_merge($this->data, ['repairable_type' => 3, 'repairable_id' => 5]));
+        $response->assertSessionHasErrors('repairable_id');
     }
 }

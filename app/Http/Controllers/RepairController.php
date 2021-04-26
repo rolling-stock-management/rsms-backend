@@ -46,17 +46,19 @@ class RepairController extends Controller
         $repair = Repair::create($data);
 
         $repairable = null;
-        switch ($data['repairable_type'])
-        {
-            case 1: {
+        switch ($data['repairable_type']) {
+            case 1:
+            {
                 $repairable = PassengerWagon::find($data['repairable_id']);
                 break;
             }
-            case 2: {
+            case 2:
+            {
                 $repairable = FreightWagon::find($data['repairable_id']);
                 break;
             }
-            case 3: {
+            case 3:
+            {
                 $repairable = TractiveUnit::find($data['repairable_id']);
                 break;
             }

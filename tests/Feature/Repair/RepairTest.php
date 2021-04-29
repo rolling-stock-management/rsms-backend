@@ -164,6 +164,22 @@ class RepairTest extends TestCase
     }
 
     /**
+     * Test repair end date must be after start date.
+     *
+     * @return void
+     */
+    public function testRepairEndDateMustBeAfterStartDate()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync([3]);
+        $response = $this->post('api/repairs', array_merge($this->data, ['end_date' => '2021-02-21']));
+        $response->assertSessionHasErrors('end_date');
+    }
+
+    /**
      * Test user must have the 'repair-viewAny' permission in order to see a list of repairs.
      *
      * @return void

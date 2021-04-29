@@ -127,7 +127,7 @@ class RepairController extends Controller
             'repairable_type' => ['required', Rule::in([1,2,3])],
             'repairable_id' => ['required', new ExistsRepairable],
             'start_date' => ['required', 'date'],
-            'end_date' => ['sometimes', 'date']
+            'end_date' => ['sometimes', 'date', 'after:start_date']
         ]);
     }
 }

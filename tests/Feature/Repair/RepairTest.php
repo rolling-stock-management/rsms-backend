@@ -206,7 +206,9 @@ class RepairTest extends TestCase
             $this->user,
             ['*']
         );
-        Repair::factory()->count(11)->create();
+        Repair::factory()->count(11)->for(
+            PassengerWagon::factory(), 'repairable'
+        )->create();
         $this->user->roles[0]->permissions()->sync([1]);
         $response = $this->get('api/repairs');
 
@@ -242,7 +244,9 @@ class RepairTest extends TestCase
             $this->user,
             ['*']
         );
-        $repair = Repair::factory()->create();
+        $repair = Repair::factory()->for(
+            PassengerWagon::factory(), 'repairable'
+        )->create();
         $this->user->roles[0]->permissions()->sync([2]);
         $response = $this->get('api/repairs/' . $repair->id);
 

@@ -9,7 +9,7 @@ class RepairResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
@@ -21,7 +21,10 @@ class RepairResource extends JsonResource
                 'type' => $this->type,
                 'workshop' => $this->workshop,
                 'repairable_type' => $this->repairable_type,
-                'repairable' => $this->repairable,
+                'repairable' => [
+                    'id' => $this->repairable->id,
+                    'number' => $this->repairable->getStylizedNumber(),
+                ],
                 'description' => $this->description,
                 'start_date' => $this->start_date ? $this->start_date->format('Y-m-d') : null,
                 'end_date' => $this->end_date ? $this->end_date->format('Y-m-d') : null,

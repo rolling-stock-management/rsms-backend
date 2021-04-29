@@ -195,6 +195,7 @@ class RepairRelationshipsTest extends TestCase
         $response->assertStatus(Response::HTTP_CREATED);
 
         $this->assertNotNull($response['data']['repairable']);
+        $this->assertEquals('App\Models\PassengerWagon',$response['data']['repairable_type']);
     }
 
     /**
@@ -218,6 +219,7 @@ class RepairRelationshipsTest extends TestCase
         $this->assertEquals($this->data['short_description'], $repair->short_description);
         $this->assertEquals(1, $repair->repairable->id);
         $response->assertStatus(Response::HTTP_OK);
+        $this->assertEquals('App\Models\PassengerWagon',$response['data']['repairable_type']);
     }
 
     /**
@@ -255,6 +257,7 @@ class RepairRelationshipsTest extends TestCase
         $response->assertStatus(Response::HTTP_CREATED);
 
         $this->assertNotNull($response['data']['repairable']);
+        $this->assertEquals('App\Models\FreightWagon',$response['data']['repairable_type']);
     }
 
     /**
@@ -278,6 +281,7 @@ class RepairRelationshipsTest extends TestCase
         $this->assertEquals($this->data['short_description'], $repair->short_description);
         $this->assertEquals(1, $repair->repairable->id);
         $response->assertStatus(Response::HTTP_OK);
+        $this->assertEquals('App\Models\FreightWagon',$response['data']['repairable_type']);
     }
 
     /**
@@ -315,6 +319,7 @@ class RepairRelationshipsTest extends TestCase
         $response->assertStatus(Response::HTTP_CREATED);
 
         $this->assertNotNull($response['data']['repairable']);
+        $this->assertEquals('App\Models\TractiveUnit',$response['data']['repairable_type']);
     }
 
     /**
@@ -338,6 +343,7 @@ class RepairRelationshipsTest extends TestCase
         $this->assertEquals($this->data['short_description'], $repair->short_description);
         $this->assertEquals(1, $repair->repairable->id);
         $response->assertStatus(Response::HTTP_OK);
+        $this->assertEquals('App\Models\TractiveUnit',$response['data']['repairable_type']);
     }
 
     /**

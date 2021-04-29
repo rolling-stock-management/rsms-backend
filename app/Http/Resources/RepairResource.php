@@ -20,6 +20,7 @@ class RepairResource extends JsonResource
                 'short_description' => $this->short_description,
                 'type' => $this->type,
                 'workshop' => $this->workshop,
+                'repairable_type' => $this->repairable_type,
                 'repairable' => $this->repairable,
                 'description' => $this->description,
                 'start_date' => $this->start_date ? $this->start_date->format('Y-m-d') : null,

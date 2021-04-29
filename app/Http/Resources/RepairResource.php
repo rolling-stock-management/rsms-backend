@@ -22,8 +22,8 @@ class RepairResource extends JsonResource
                 'workshop' => $this->workshop,
                 'repairable' => $this->repairable,
                 'description' => $this->description,
-                'start_date' => $this->start_date ? $this->start_date->format('d.m.Y') : null,
-                'end_date' => $this->end_date ? $this->end_date->format('d.m.Y') : null,
+                'start_date' => $this->start_date ? $this->start_date->format('Y-m-d') : null,
+                'end_date' => $this->end_date ? $this->end_date->format('Y-m-d') : null,
                 'created_at' => $this->created_at->format('d.m.Y h:i:s'),
                 'updated_at' => $this->updated_at->format('d.m.Y h:i:s')
             ]

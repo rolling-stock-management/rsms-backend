@@ -95,8 +95,8 @@ class RepairTest extends TestCase
                 'id' => $repair->id,
                 'short_description' => $repair->short_description,
                 'description' => $repair->description,
-                'start_date' => $repair->start_date->format('d.m.Y'),
-                'end_date' => $repair->end_date->format('d.m.Y'),
+                'start_date' => $repair->start_date->format('Y-m-d'),
+                'end_date' => $repair->end_date->format('Y-m-d'),
                 'created_at' => $repair->created_at->format('d.m.Y h:i:s'),
                 'updated_at' => $repair->updated_at->format('d.m.Y h:i:s')
             ]
@@ -235,8 +235,8 @@ class RepairTest extends TestCase
                 'id' => $repair->id,
                 'short_description' => $repair->short_description,
                 'description' => $repair->description,
-                'start_date' => $repair->start_date->format('d.m.Y'),
-                'end_date' => $repair->end_date->format('d.m.Y'),
+                'start_date' => $repair->start_date->format('Y-m-d'),
+                'end_date' => $repair->end_date->format('Y-m-d'),
                 'created_at' => $repair->created_at->format('d.m.Y h:i:s'),
                 'updated_at' => $repair->updated_at->format('d.m.Y h:i:s')
             ]
@@ -290,8 +290,8 @@ class RepairTest extends TestCase
                 'id' => $repair->id,
                 'short_description' => $repair->short_description,
                 'description' => $repair->description,
-                'start_date' => $repair->start_date->format('d.m.Y'),
-                'end_date' => $repair->end_date->format('d.m.Y'),
+                'start_date' => $repair->start_date->format('Y-m-d'),
+                'end_date' => $repair->end_date->format('Y-m-d'),
                 'created_at' => $repair->created_at->format('d.m.Y h:i:s'),
                 'updated_at' => $repair->updated_at->format('d.m.Y h:i:s')
             ]

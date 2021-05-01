@@ -170,6 +170,25 @@ class PassengerWagonTypeTest extends TestCase
     }
 
     /**
+     * Test passenger wagon type repair_valid_for must be a positive integer.
+     *
+     * @return void
+     */
+    public function testPassengerWagonTypeRepairValidForMustBeAPositiveInteger()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync([3]);
+        $response = $this->post('api/passenger-wagon-types', array_merge($this->data, ['repair_valid_for' => 0]));
+        $response->assertSessionHasErrors('repair_valid_for');
+
+        $response = $this->post('api/passenger-wagon-types', array_merge($this->data, ['repair_valid_for' => -1]));
+        $response->assertSessionHasErrors('repair_valid_for');
+    }
+
+    /**
      * Test user must have the 'passenger-wagon-type-viewAny' permission in order to see a list of passenger wagon types.
      *
      * @return void

@@ -101,7 +101,7 @@ class PassengerWagonTypeController extends Controller
             'name' => ['required', 'string'],
             'description' => ['sometimes', 'string', 'nullable'],
             'interior_type_id' => ['required', 'integer', 'exists:App\Models\PassengerInteriorType,id'],
-            'repair_valid_for' => ['required', 'integer']
+            'repair_valid_for' => ['required', 'integer', 'gt:0']
         ]);
     }
 }

@@ -16,17 +16,17 @@ class RoleSeeder extends Seeder
     {
         //Passenger wagons manager role
         $rolePassenger = Role::factory()->create(['name' => 'passenger-manager']);
-        $rolePassenger->permissions()->sync([12, 17, 22, 32, 37, 42, 47, 57, 58, 59, 60, 61]);
+        $rolePassenger->permissions()->sync([12, 17, 22, 32, 37, 42, 47, 57, 58, 59, 60, 61, 67, 68, 69, 70, 71]);
         $rolePassenger->save();
 
         //Freight wagons manager role
         $roleFreight = Role::factory()->create(['name' => 'freight-manager']);
-        $roleFreight->permissions()->sync([12, 27, 32, 37, 42, 47, 62, 63, 64, 65, 66]);
+        $roleFreight->permissions()->sync([12, 27, 32, 37, 42, 47, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71]);
         $roleFreight->save();
 
         //Tractive units manager role
-        $roleLocomotive = Role::factory()->create(['name' => 'locmotive-manager']);
-        $roleLocomotive->permissions()->sync([12, 32, 37, 42, 47, 52, 53, 54, 55, 56]);
+        $roleLocomotive = Role::factory()->create(['name' => 'locomotive-manager']);
+        $roleLocomotive->permissions()->sync([12, 32, 37, 42, 47, 52, 53, 54, 55, 56, 67, 68, 69, 70, 71]);
         $roleLocomotive->save();
 
         //Passenger wagons reporter role

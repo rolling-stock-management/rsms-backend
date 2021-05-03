@@ -54,6 +54,47 @@ class TractiveUnitRelationshipsTest extends TestCase
     }
 
     /**
+     * Test tractive unit owner_id, status_id, repair_workshop_id, depot_id must be integers.
+     *
+     * @return void
+     */
+    public function testTractiveUnitForeignKeyIdsMustBeIntegers()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync([3]);
+        collect(['owner_id', 'status_id', 'repair_workshop_id', 'depot_id'])
+            ->each(function ($field) {
+                $response = $this->post('api/tractive-units', array_merge($this->data, [$field => (object)null]));
+                $response->assertSessionHasErrors($field);
+
+                $response = $this->post('api/tractive-units', array_merge($this->data, [$field => 'aa']));
+                $response->assertSessionHasErrors($field);
+            });
+    }
+
+    /**
+     * Test tractive unit owner_id, status_id, repair_workshop_id, depot_id must exist.
+     *
+     * @return void
+     */
+    public function testTractiveUnitForeignKeyIdsMustExist()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync([3]);
+        collect(['owner_id', 'status_id', 'repair_workshop_id', 'depot_id'])
+            ->each(function ($field) {
+                $response = $this->post('api/tractive-units', array_merge($this->data, [$field => 5]));
+                $response->assertSessionHasErrors($field);
+            });
+    }
+
+    /**
      * Test depot can be assigned to tractive unit.
      *
      * @return void

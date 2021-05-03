@@ -93,7 +93,7 @@ class RoleController extends Controller
     private function validateRequest()
     {
         return request()->validate([
-            'name' => 'required|string',
+            'name' => ['required', 'string', 'unique:App\Models\Role,name'],
             'permission_ids' => ['sometimes', 'array', 'nullable']
         ]);
     }

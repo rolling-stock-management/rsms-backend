@@ -117,6 +117,25 @@ class RoleTest extends TestCase
 
         $response->assertSessionHasErrors('name');
     }
+
+    /**
+     * Test role name must be unique.
+     *
+     * @return void
+     */
+    public function testRoleNameMustBeUnique()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync([3]);
+        Role::factory()->create(['name' => 'role-name']);
+        $response = $this->post('api/roles',$this->data);
+
+        $response->assertSessionHasErrors('name');
+    }
+
     /**
      * Test user must have the 'role-viewAny' permission in order to see a list of roles.
      *

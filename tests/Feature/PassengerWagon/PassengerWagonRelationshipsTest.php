@@ -54,6 +54,46 @@ class PassengerWagonRelationshipsTest extends TestCase
         ];
     }
 
+    /**
+     * Test passenger wagon owner_id, status_id, repair_workshop_id, depot_id must be integers.
+     *
+     * @return void
+     */
+    public function testPassengerWagonForeignKeyIdsMustBeIntegers()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync([3]);
+        collect(['owner_id', 'status_id', 'repair_workshop_id', 'depot_id'])
+            ->each(function ($field) {
+                $response = $this->post('api/passenger-wagons', array_merge($this->data, [$field => (object)null]));
+                $response->assertSessionHasErrors($field);
+
+                $response = $this->post('api/passenger-wagons', array_merge($this->data, [$field => 'aaa']));
+                $response->assertSessionHasErrors($field);
+            });
+    }
+
+    /**
+     * Test passenger wagon owner_id, status_id, repair_workshop_id, depot_id must exist.
+     *
+     * @return void
+     */
+    public function testPassengerWagonForeignKeyIdsMustExist()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync([3]);
+        collect(['owner_id', 'status_id', 'repair_workshop_id', 'depot_id'])
+            ->each(function ($field) {
+                $response = $this->post('api/passenger-wagons', array_merge($this->data, [$field => 5]));
+                $response->assertSessionHasErrors($field);
+            });
+    }
 
     /**
      * Test passenger wagon type is properly assigned to passenger wagon.

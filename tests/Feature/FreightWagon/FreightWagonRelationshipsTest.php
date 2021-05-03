@@ -12,7 +12,6 @@ use App\Models\Status;
 use App\Models\User;
 use Database\Seeders\Permissions\FreightWagonPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -56,6 +55,47 @@ class FreightWagonRelationshipsTest extends TestCase
             'depot_id' => 1,
             'other_info' => 'S:A - 39t, B1 - 39t, B2 - 47t, C - 55t',
         ];
+    }
+
+    /**
+     * Test freight wagon type_id, owner_id, status_id, repair_workshop_id, depot_id must be integers.
+     *
+     * @return void
+     */
+    public function testFreightWagonForeignKeyIdsMustBeIntegers()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync([3]);
+        collect(['type_id', 'owner_id', 'status_id', 'repair_workshop_id', 'depot_id'])
+            ->each(function ($field) {
+                $response = $this->post('api/freight-wagons', array_merge($this->data, [$field => (object)null]));
+                $response->assertSessionHasErrors($field);
+
+                $response = $this->post('api/freight-wagons', array_merge($this->data, [$field => 'aaa']));
+                $response->assertSessionHasErrors($field);
+            });
+    }
+
+    /**
+     * Test freight wagon type_id, owner_id, status_id, repair_workshop_id, depot_id must exist.
+     *
+     * @return void
+     */
+    public function testFreightWagonForeignKeyIdsMustExist()
+    {
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync([3]);
+        collect(['type_id', 'owner_id', 'status_id', 'repair_workshop_id', 'depot_id'])
+            ->each(function ($field) {
+                $response = $this->post('api/freight-wagons', array_merge($this->data, [$field => 5]));
+                $response->assertSessionHasErrors($field);
+            });
     }
 
     /**

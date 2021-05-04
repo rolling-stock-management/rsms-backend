@@ -20,6 +20,7 @@ class TrainResource extends JsonResource
                 'number' => $this->number,
                 'route' => $this->route,
                 'note' => $this->note,
+                'timetable' => $this->timetable,
                 'created_at' => $this->created_at->format('d.m.Y h:i:s'),
                 'updated_at' => $this->updated_at->format('d.m.Y h:i:s')
             ]

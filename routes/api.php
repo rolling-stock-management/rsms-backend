@@ -18,6 +18,7 @@ use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TimetableController;
 use App\Http\Controllers\TractiveUnitController;
 use App\Http\Controllers\TractiveUnitSearchController;
+use App\Http\Controllers\TrainController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,6 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('freight-wagons', FreightWagonController::class);
     Route::apiResource('repairs', RepairController::class);
     Route::apiResource('timetables', TimetableController::class);
+    Route::apiResource('trains', TrainController::class);
     Route::post('passenger-wagons-search', [PassengerWagonSearchController::class, 'index']);
     Route::post('freight-wagons-search', [FreightWagonSearchController::class, 'index']);
     Route::post('tractive-units-search', [TractiveUnitSearchController::class, 'index']);

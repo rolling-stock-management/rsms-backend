@@ -92,7 +92,7 @@ class TrainController extends Controller
         return request()->validate([
             'number' => ['required', 'string'],
             'route' => ['required', 'string'],
-            'note' => ['sometimes', 'string'],
+            'note' => ['sometimes', 'string', 'nullable'],
             'timetable_id' => ['required', 'integer', 'exists:App\Models\Timetable,id']
         ]);
     }

@@ -19,6 +19,7 @@ use App\Http\Controllers\TimetableController;
 use App\Http\Controllers\TractiveUnitController;
 use App\Http\Controllers\TractiveUnitSearchController;
 use App\Http\Controllers\TrainController;
+use App\Http\Controllers\TrainSearchController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -63,3 +64,4 @@ Route::middleware('auth:sanctum')->group(function () {
         return \App\Models\User::with('roles.permissions')->find($id);
     });
 });
+Route::post('trains-search', [TrainSearchController::class, 'index']);

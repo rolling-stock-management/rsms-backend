@@ -6,6 +6,7 @@ use App\Http\Controllers\FreightWagonSearchController;
 use App\Http\Controllers\FreightWagonTypeController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\PassengerInteriorTypeController;
+use App\Http\Controllers\PassengerReportController;
 use App\Http\Controllers\PassengerWagonController;
 use App\Http\Controllers\PassengerWagonSearchController;
 use App\Http\Controllers\PassengerWagonTypeController;
@@ -58,6 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('timetables', TimetableController::class);
     Route::apiResource('trains', TrainController::class);
     Route::apiResource('rolling-stock-trains', RollingStockTrainController::class);
+    Route::apiResource('passenger-reports', PassengerReportController::class)->except('store');
     Route::post('passenger-wagons-search', [PassengerWagonSearchController::class, 'index']);
     Route::post('freight-wagons-search', [FreightWagonSearchController::class, 'index']);
     Route::post('tractive-units-search', [TractiveUnitSearchController::class, 'index']);
@@ -67,3 +69,4 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 Route::post('trains-search', [TrainSearchController::class, 'index']);
+Route::apiResource('passenger-reports', PassengerReportController::class)->only('store');

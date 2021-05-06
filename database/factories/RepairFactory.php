@@ -26,8 +26,8 @@ class RepairFactory extends Factory
         return [
             'short_description' => $this->faker->name,
             'description' => $this->faker->text,
-            'type_id' => RepairType::factory()->create(),
-            'workshop_id' => RepairWorkshop::factory()->create(),
+            'type_id' => RepairType::factory(),
+            'workshop_id' => RepairWorkshop::factory(),
             'start_date' => $this->faker->date(),
             'end_date' => $this->faker->date(),
         ];

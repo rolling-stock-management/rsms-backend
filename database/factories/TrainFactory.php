@@ -26,7 +26,7 @@ class TrainFactory extends Factory
             'number' => $this->faker->numberBetween(10000, 99999),
             'route' => $this->faker->address,
             'note' => $this->faker->text,
-            'timetable_id' => Timetable::factory()->create()
+            'timetable_id' => Timetable::factory()
         ];
     }
 }

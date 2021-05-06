@@ -27,8 +27,8 @@ class RollingStockTrainFactory extends Factory
             'date' => $this->faker->date(),
             'position' => $this->faker->numberBetween(1, 10),
             'comment' => $this->faker->sentence,
-            'train_id' => Train::factory()->create(),
-            'user_id' => User::factory()->create()
+            'train_id' => Train::factory(),
+            'user_id' => User::factory()
         ];
     }
 }

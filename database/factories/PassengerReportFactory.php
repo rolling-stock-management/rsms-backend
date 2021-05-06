@@ -28,8 +28,8 @@ class PassengerReportFactory extends Factory
             'date' => $this->faker->date(),
             'problem_description' => $this->faker->sentence,
             'wagon_number' => $this->faker->numberBetween(1, 10),
-            'train_id'=> Train::factory()->create(),
-            'wagon_id'=> PassengerWagon::factory()->create()
+            'train_id'=> Train::factory(),
+            'wagon_id'=> PassengerWagon::factory()
         ];
     }
 }

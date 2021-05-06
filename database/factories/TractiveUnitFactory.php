@@ -34,12 +34,12 @@ class TractiveUnitFactory extends Factory
             'axle_arrangement' => $this->faker->name,
             'length' => $this->faker->numberBetween($min = 10, $max = 30),
             'brake_marking' => $this->faker->name,
-            'owner_id' => Owner::factory()->create(),
-            'status_id' => Status::factory()->create(),
+            'owner_id' => Owner::factory(),
+            'status_id' => Status::factory(),
             'repair_date' => $this->faker->date(),
             'repair_valid_until' => $this->faker->date(),
-            'repair_workshop_id' => RepairWorkshop::factory()->create(),
-            'depot_id' => Depot::factory()->create(),
+            'repair_workshop_id' => RepairWorkshop::factory(),
+            'depot_id' => Depot::factory(),
             'other_info' => $this->faker->text
         ];
     }

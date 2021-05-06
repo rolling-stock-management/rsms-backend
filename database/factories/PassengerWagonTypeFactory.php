@@ -25,7 +25,7 @@ class PassengerWagonTypeFactory extends Factory
         return [
             'name' => $this->faker->name,
             'description' => $this->faker->text,
-            'interior_type_id' => PassengerInteriorType::factory()->create(),
+            'interior_type_id' => PassengerInteriorType::factory(),
             'repair_valid_for' => $this->faker->numberBetween(1, 10)
         ];
     }

@@ -30,7 +30,7 @@ class RollingStockTrainController extends Controller
      */
     public function index()
     {
-        $rollingStockTrains = RollingStockTrain::paginate(10);
+        $rollingStockTrains = RollingStockTrain::allRollingStockTrains();
 
         return RollingStockTrainResource::collection($rollingStockTrains);
     }

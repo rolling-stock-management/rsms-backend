@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Http\QueryFilters\RollingStockTrain as Filters;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pipeline\Pipeline;
 
 class RollingStockTrain extends Model
 {
@@ -22,6 +24,24 @@ class RollingStockTrain extends Model
      * @var array
      */
     protected $dates = ['date'];
+
+    /**
+     * Get all records through filtering pipelines and paginate the result.
+     *
+     * @return mixed
+     */
+    public static function allRollingStockTrains()
+    {
+        return app(Pipeline::class)
+            ->send(RollingStockTrain::query())
+            ->through([
+                Filters\TrainableType::class,
+                Filters\Date::class,
+                Filters\TrainId::class,
+            ])
+            ->thenReturn()
+            ->paginate(10);
+    }
 
     /**
      * Get the train which the rolling stock train belongs to.

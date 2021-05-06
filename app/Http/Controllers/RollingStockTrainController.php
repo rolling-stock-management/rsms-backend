@@ -7,9 +7,9 @@ use App\Models\FreightWagon;
 use App\Models\PassengerWagon;
 use App\Models\RollingStockTrain;
 use App\Models\TractiveUnit;
-use App\Rules\ExistsRollingStockTrainable;
+use App\Rules\ExistsTrainable;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,13 +20,13 @@ class RollingStockTrainController extends Controller
      */
     public function __construct()
     {
-        $this->authorizeResource(RollingStockTrain::class, 'rolling-stock-train');
+        $this->authorizeResource(RollingStockTrain::class, 'rolling_stock_train');
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\Response
      */
     public function index()
     {
@@ -39,11 +39,12 @@ class RollingStockTrainController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
     public function store(Request $request)
     {
         $data = $this->validateRequestData();
+        $data = array_merge($data, ['user_id' => Auth::user()->id]);
         $rollingStockTrain = RollingStockTrain::create($data);
 
         $rollingStockTrainable = null;
@@ -64,7 +65,7 @@ class RollingStockTrainController extends Controller
                 break;
             }
         }
-        $rollingStockTrainable->repairs()->save($rollingStockTrain);
+        $rollingStockTrainable->trains()->save($rollingStockTrain);
 
         return (new RollingStockTrainResource($rollingStockTrain))
             ->response()
@@ -75,7 +76,7 @@ class RollingStockTrainController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\RollingStockTrain  $rollingStockTrain
-     * @return \Illuminate\Http\Response
+     * @return RollingStockTrainResource|\Illuminate\Http\Response
      */
     public function show(RollingStockTrain $rollingStockTrain)
     {
@@ -87,7 +88,7 @@ class RollingStockTrainController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\RollingStockTrain  $rollingStockTrain
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
     public function update(Request $request, RollingStockTrain $rollingStockTrain)
     {
@@ -121,14 +122,12 @@ class RollingStockTrainController extends Controller
     private function validateRequestData()
     {
         return request()->validate([
-            'short_description' => ['required', 'string'],
-            'type_id' => ['required', 'integer', 'exists:App\Models\RollingStockTrainType,id'],
-            'workshop_id' => ['required', 'integer', 'exists:App\Models\RollingStockTrainWorkshop,id'],
-            'description' => ['sometimes', 'string', 'nullable'],
+            'date' => ['required', 'date'],
+            'position' => ['required', 'integer'],
+            'train_id' => ['required', 'integer', 'exists:App\Models\Train,id'],
+            'comment' => ['sometimes', 'string', 'nullable'],
             'trainable_type' => ['required', Rule::in([1,2,3])],
-            'trainable_id' => ['required', new ExistsRollingStockTrainable],
-            'start_date' => ['required', 'date'],
-            'end_date' => ['sometimes', 'date', 'after:start_date']
+            'trainable_id' => ['required', new ExistsTrainable],
         ]);
     }
 }

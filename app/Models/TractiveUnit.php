@@ -190,4 +190,14 @@ class TractiveUnit extends Model
     {
         return $this->morphMany(Repair::class, 'repairable');
     }
+
+    /**
+     * Get the trains of the tractive unit.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function trains()
+    {
+        return $this->morphMany(Train::class, 'trainable');
+    }
 }

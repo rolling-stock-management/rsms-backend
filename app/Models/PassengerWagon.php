@@ -200,4 +200,14 @@ class PassengerWagon extends Model
     {
         return $this->morphMany(Repair::class, 'repairable');
     }
+
+    /**
+     * Get the trains of the passenger wagon.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function trains()
+    {
+        return $this->morphMany(Train::class, 'trainable');
+    }
 }

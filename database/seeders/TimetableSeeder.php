@@ -28,7 +28,7 @@ class TimetableSeeder extends Seeder
     {
         return [
             ['start_date' => '15-12-2019', 'end_date' => '14-12-2020'],
-            ['start_date' => '15-12-2019', 'end_date' => '14-12-2020'],
+            ['start_date' => '15-12-2020', 'end_date' => '14-12-2021'],
         ];
     }
 }

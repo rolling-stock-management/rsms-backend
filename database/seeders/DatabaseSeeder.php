@@ -7,6 +7,7 @@ use Database\Seeders\Permissions\FreightWagonPermissionsSeeder;
 use Database\Seeders\Permissions\FreightWagonTypePermissionsSeeder;
 use Database\Seeders\Permissions\OwnerPermissionsSeeder;
 use Database\Seeders\Permissions\PassengerInteriorTypePermissionsSeeder;
+use Database\Seeders\Permissions\PassengerReportPermissionsSeeder;
 use Database\Seeders\Permissions\PassengerWagonPermissionsSeeder;
 use Database\Seeders\Permissions\PassengerWagonTypePermissionsSeeder;
 use Database\Seeders\Permissions\PermissionPermissionsSeeder;
@@ -14,8 +15,11 @@ use Database\Seeders\Permissions\RepairPermissionsSeeder;
 use Database\Seeders\Permissions\RepairTypePermissionsSeeder;
 use Database\Seeders\Permissions\RepairWorkshopPermissionsSeeder;
 use Database\Seeders\Permissions\RolePermissionsSeeder;
+use Database\Seeders\Permissions\RollingStockTrainPermissionsSeeder;
 use Database\Seeders\Permissions\StatusPermissionsSeeder;
+use Database\Seeders\Permissions\TimetablePermissionsSeeder;
 use Database\Seeders\Permissions\TractiveUnitPermissionsSeeder;
+use Database\Seeders\Permissions\TrainPermissionsSeeder;
 use Database\Seeders\Permissions\UserPermissionsSeeder;
 use Illuminate\Database\Seeder;
 
@@ -44,6 +48,10 @@ class DatabaseSeeder extends Seeder
         $this->call(PassengerWagonPermissionsSeeder::class);
         $this->call(FreightWagonPermissionsSeeder::class);
         $this->call(RepairPermissionsSeeder::class);
+        $this->call(TimetablePermissionsSeeder::class);
+        $this->call(TrainPermissionsSeeder::class);
+        $this->call(RollingStockTrainPermissionsSeeder::class);
+        $this->call(PassengerReportPermissionsSeeder::class);
         //Models
         $this->call(RoleSeeder::class);
         $this->call(DepotSeeder::class);
@@ -54,5 +62,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RepairTypeSeeder::class);
         $this->call(OwnerSeeder::class);
         $this->call(RepairWorkshopSeeder::class);
+        $this->call(TimetableSeeder::class);
+        $this->call(TrainSeeder::class);
     }
 }

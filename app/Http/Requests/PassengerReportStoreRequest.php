@@ -29,6 +29,7 @@ class PassengerReportStoreRequest extends FormRequest
             'problem_description' => ['required', 'string'],
             'wagon_number' => ['required', 'integer'],
             'train_id' => ['required', 'integer', 'exists:App\Models\Train,id'],
+            'image' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,bmp,png,gif,webp']
         ];
     }
 }

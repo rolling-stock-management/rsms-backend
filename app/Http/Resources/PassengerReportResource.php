@@ -23,6 +23,7 @@ class PassengerReportResource extends JsonResource
                 'wagon_number' => $this->wagon_number,
                 'train' => new TrainResource($this->train),
                 'wagon' => new PassengerWagonResource($this->wagon),
+                'image_file_name' => $this->image_file_name,
                 'created_at' => $this->created_at->format('d.m.Y h:i:s'),
                 'updated_at' => $this->updated_at->format('d.m.Y h:i:s')
             ]

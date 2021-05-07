@@ -15,7 +15,7 @@ class PassengerReport extends Model
      *
      * @var array
      */
-    protected $fillable = ['email', 'date', 'problem_description', 'wagon_number', 'train_id', 'wagon_id'];
+    protected $fillable = ['email', 'date', 'problem_description', 'wagon_number', 'train_id', 'wagon_id', 'image_file_name'];
 
     /**
      * The attributes that should be treated as dates.

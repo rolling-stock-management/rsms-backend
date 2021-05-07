@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RoleUpdateRequest;
 use App\Http\Resources\RoleResource;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -57,13 +58,13 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  RoleUpdateRequest $request
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function update(Request $request, Role $role)
+    public function update(RoleUpdateRequest $request, Role $role)
     {
-        $data = $this->validateRequest();
+        $data = $request->validated();
         $role->update($data);
         if (array_key_exists('permission_ids',$data)) {
             $role->permissions()->sync($data['permission_ids']);

@@ -4,6 +4,7 @@ use App\Http\Controllers\DepotController;
 use App\Http\Controllers\FreightWagonController;
 use App\Http\Controllers\FreightWagonSearchController;
 use App\Http\Controllers\FreightWagonTypeController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\PassengerInteriorTypeController;
 use App\Http\Controllers\PassengerReportController;
@@ -60,6 +61,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('trains', TrainController::class);
     Route::apiResource('rolling-stock-trains', RollingStockTrainController::class);
     Route::apiResource('passenger-reports', PassengerReportController::class)->except('store');
+    Route::apiResource('images', ImageController::class)->except(['index', 'show']);
     Route::post('passenger-wagons-search', [PassengerWagonSearchController::class, 'index']);
     Route::post('freight-wagons-search', [FreightWagonSearchController::class, 'index']);
     Route::post('tractive-units-search', [TractiveUnitSearchController::class, 'index']);
@@ -70,3 +72,4 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 Route::post('trains-search', [TrainSearchController::class, 'index']);
 Route::apiResource('passenger-reports', PassengerReportController::class)->only('store');
+Route::apiResource('images', ImageController::class)->only(['index', 'show']);

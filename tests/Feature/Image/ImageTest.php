@@ -403,7 +403,7 @@ class ImageTest extends TestCase
             ['*']
         );
 
-        $this->user->roles[0]->permissions()->sync([2]);
+        $this->user->roles[0]->permissions()->sync([3]);
 
         $image = Image::factory()->create();
         $response = $this->delete('api/images/' . $image->id);

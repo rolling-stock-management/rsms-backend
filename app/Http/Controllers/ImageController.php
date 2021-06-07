@@ -9,6 +9,7 @@ use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
@@ -97,6 +98,7 @@ class ImageController extends Controller
      */
     public function destroy(Image $image)
     {
+        Storage::delete('images/' . $image->file_name);
         $image->delete();
 
         return response([], Response::HTTP_NO_CONTENT);

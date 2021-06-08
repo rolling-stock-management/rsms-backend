@@ -21,7 +21,11 @@ class ImageResource extends JsonResource
                 'title' => $this->title,
                 'description' => $this->description,
                 'date' => isset($this->date) ? $this->date->format('d.m.Y') : null,
-                // TODO: Add relationship
+                'imageables' => [
+                    'passenger' => $this->passengerWagons,
+                    'freight' => [],
+                    'locomotive' => [],
+                ],
                 'last_updated' => $this->updated_at->format('d.m.Y h:i:s')
             ]
         ];

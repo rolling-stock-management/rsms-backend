@@ -6,6 +6,8 @@ use App\Helpers\ImageHelper;
 use App\Http\Requests\ImageStoreRequest;
 use App\Http\Resources\ImageResource;
 use App\Models\Image;
+use App\Models\PassengerWagon;
+use App\Rules\ImageablesArrayRules;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -52,7 +54,10 @@ class ImageController extends Controller
         $image = Image::create($data);
         ImageHelper::storeImageAndCreateThumbnail($fileContents, 500, 500);
 
-        //TODO: Relationships
+        foreach ($data['imageables']['passenger'] as &$item) {
+            $wagon = PassengerWagon::find($item);
+            $image->passengerWagons()->save($wagon);
+        }
 
         return (new ImageResource($image))
             ->response()
@@ -62,7 +67,7 @@ class ImageController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Image  $image
+     * @param \App\Models\Image $image
      * @return ImageResource|Response
      */
     public function show(Image $image)
@@ -73,15 +78,19 @@ class ImageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Image  $image
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Image $image
      * @return \Illuminate\Http\JsonResponse|Response|object
      */
     public function update(Request $request, Image $image)
     {
         $data = $this->validateRequest();
 
-        //TODO: Relationships
+        $image->passengerWagons()->sync([]);
+        foreach ($data['imageables']['passenger'] as &$item) {
+            $wagon = PassengerWagon::find($item);
+            $image->passengerWagons()->save($wagon);
+        }
 
         $image->update($data);
 
@@ -93,7 +102,7 @@ class ImageController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Image  $image
+     * @param \App\Models\Image $image
      * @return \Illuminate\Http\Response
      */
     public function destroy(Image $image)
@@ -115,7 +124,7 @@ class ImageController extends Controller
             'title' => ['required', 'string'],
             'description' => ['sometimes', 'string'],
             'date' => ['sometimes', 'date'],
-            //TODO: Relationships
+            'imageables' => ['required', new ImageablesArrayRules],
         ]);
     }
 }

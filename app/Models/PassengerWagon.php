@@ -210,4 +210,12 @@ class PassengerWagon extends Model
     {
         return $this->morphMany(Train::class, 'trainable');
     }
+
+    /**
+     * Get the images of the passenger wagon.
+     */
+    public function images()
+    {
+        return $this->morphToMany(Image::class, 'imageable');
+    }
 }

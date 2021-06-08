@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Image;
+use App\Rules\ImageablesArrayRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ImageStoreRequest extends FormRequest
@@ -29,7 +30,7 @@ class ImageStoreRequest extends FormRequest
             'description' => ['sometimes', 'string'],
             'date' => ['sometimes', 'date'],
             'file' => ['required', 'image', 'mimes:jpeg,bmp,png,gif,webp'],
-            //TODO: Relationships
+            'imageables' => ['required', new ImageablesArrayRules],
         ];
     }
 }

@@ -34,4 +34,12 @@ class Image extends Model
     {
         $this->attributes['date'] = Carbon::parse($value);
     }
+
+    /**
+     * Get all of the passenger wagons that are assigned this image.
+     */
+    public function passengerWagons()
+    {
+        return $this->morphedByMany(PassengerWagon::class, 'imageable');
+    }
 }

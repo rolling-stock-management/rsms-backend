@@ -42,8 +42,11 @@ class ImageTest extends TestCase
             'description' => $image->description,
             'date' => "2020-11-21",
             'file' => $file,
-            'imageable_types' => [1],
-            'imageable_ids' => [1],
+            'imageables' => [
+                'passenger' => [1],
+                'freight' => [],
+                'locomotive' => [],
+            ],
         ];
     }
 

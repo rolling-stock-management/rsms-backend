@@ -373,4 +373,38 @@ class ImageRelationshipsTest extends TestCase
         $this->assertEmpty($response['data']['imageables']['freight']);
         $this->assertNotEmpty($response['data']['imageables']['tractive']);
     }
+
+    /**
+     * Test passenger wagons, freight wagons and tractive units can be assigned to image simultaneously.
+     *
+     * @return void
+     */
+    public function testDifferentRollingStockCanBeAssignedToImageSimultaneously()
+    {
+        FreightWagon::factory()->create();
+        TractiveUnit::factory()->create();
+
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync(1);
+
+        $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
+            'passenger' => [1],
+            'freight' => [1, 2],
+            'tractive' => [1, 2],
+        ]]));
+        $image = Image::first();
+
+        $this->assertCount(1, Image::all());
+        $response->assertStatus(Response::HTTP_CREATED);
+
+        $this->assertCount(1, $image->passengerWagons);
+        $this->assertCount(2, $image->freightWagons);
+        $this->assertCount(2, $image->tractiveUnits);
+        $this->assertNotEmpty($response['data']['imageables']['passenger']);
+        $this->assertNotEmpty($response['data']['imageables']['freight']);
+        $this->assertNotEmpty($response['data']['imageables']['tractive']);
+    }
 }

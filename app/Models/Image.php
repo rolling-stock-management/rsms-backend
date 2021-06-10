@@ -42,4 +42,12 @@ class Image extends Model
     {
         return $this->morphedByMany(PassengerWagon::class, 'imageable');
     }
+
+    /**
+     * Get all of the freight wagons that are assigned this image.
+     */
+    public function freightWagons()
+    {
+        return $this->morphedByMany(FreightWagon::class, 'imageable');
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\ImageHelper;
 use App\Http\Requests\ImageStoreRequest;
 use App\Http\Resources\ImageResource;
+use App\Models\FreightWagon;
 use App\Models\Image;
 use App\Models\PassengerWagon;
 use App\Rules\ImageablesArrayRules;
@@ -59,6 +60,11 @@ class ImageController extends Controller
             $image->passengerWagons()->save($wagon);
         }
 
+        foreach ($data['imageables']['freight'] as &$item) {
+            $wagon = FreightWagon::find($item);
+            $image->freightWagons()->save($wagon);
+        }
+
         return (new ImageResource($image))
             ->response()
             ->setStatusCode(Response::HTTP_CREATED);
@@ -90,6 +96,12 @@ class ImageController extends Controller
         foreach ($data['imageables']['passenger'] as &$item) {
             $wagon = PassengerWagon::find($item);
             $image->passengerWagons()->save($wagon);
+        }
+
+        $image->freightWagons()->sync([]);
+        foreach ($data['imageables']['freight'] as &$item) {
+            $wagon = FreightWagon::find($item);
+            $image->freightWagons()->save($wagon);
         }
 
         $image->update($data);

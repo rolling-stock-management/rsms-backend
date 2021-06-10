@@ -23,7 +23,7 @@ class ImageResource extends JsonResource
                 'date' => isset($this->date) ? $this->date->format('d.m.Y') : null,
                 'imageables' => [
                     'passenger' => $this->passengerWagons,
-                    'freight' => [],
+                    'freight' => $this->freightWagons,
                     'locomotive' => [],
                 ],
                 'last_updated' => $this->updated_at->format('d.m.Y h:i:s')

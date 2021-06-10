@@ -183,4 +183,99 @@ class ImageRelationshipsTest extends TestCase
         ]]));
         $response->assertSessionHasErrors('imageables');
     }
+
+    /**
+     * Test freight wagon can be assigned to image.
+     *
+     * @return void
+     */
+    public function testFreightWagonCanBeAssignedToImage()
+    {
+        $this->withoutExceptionHandling();
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync(1);
+
+        $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
+            'passenger' => [],
+            'freight' => [1],
+            'locomotive' => [],
+        ]]));
+        $image = Image::first();
+
+        $this->assertCount(1, Image::all());
+        $response->assertStatus(Response::HTTP_CREATED);
+
+        $this->assertCount(1, $image->freightWagons);
+        $this->assertEmpty($response['data']['imageables']['passenger']);
+        $this->assertNotEmpty($response['data']['imageables']['freight']);
+        $this->assertEmpty($response['data']['imageables']['locomotive']);
+    }
+
+    /**
+     * Test freight wagons can be assigned to image.
+     *
+     * @return void
+     */
+    public function testFreightWagonsCanBeAssignedToImage()
+    {
+        FreightWagon::factory()->create();
+
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync(1);
+
+        $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
+            'passenger' => [],
+            'freight' => [1, 2],
+            'locomotive' => [],
+        ]]));
+        $image = Image::first();
+
+        $this->assertCount(1, Image::all());
+        $response->assertStatus(Response::HTTP_CREATED);
+
+        $this->assertCount(2, $image->freightWagons);
+        $this->assertEmpty($response['data']['imageables']['passenger']);
+        $this->assertNotEmpty($response['data']['imageables']['freight']);
+        $this->assertEmpty($response['data']['imageables']['locomotive']);
+    }
+
+    /**
+     * Test freight wagon can be updated on image.
+     *
+     * @return void
+     */
+    public function testFreightWagonCanBeUpdatedOnImage()
+    {
+        $this->withoutExceptionHandling();
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync([2]);
+        $image = Image::factory()
+            ->hasAttached(
+                FreightWagon::factory()->count(1)
+            )
+            ->create();
+
+        $response = $this->patch('api/images/' . $image->id, array_merge($this->data, ['imageables' => [
+            'passenger' => [],
+            'freight' => [1],
+            'locomotive' => [],
+        ]]));
+        $image = Image::first();
+
+        $this->assertEquals($this->data['title'], $image->title);
+        $this->assertEquals(1, $image->freightWagons()->first()->id);
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertEmpty($response['data']['imageables']['passenger']);
+        $this->assertNotEmpty($response['data']['imageables']['freight']);
+        $this->assertEmpty($response['data']['imageables']['locomotive']);
+    }
 }

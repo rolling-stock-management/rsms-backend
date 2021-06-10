@@ -46,7 +46,7 @@ class ImageRelationshipsTest extends TestCase
             'imageables' => [
                 'passenger' => [],
                 'freight' => [],
-                'locomotive' => [],
+                'tractive' => [],
             ],
         ];
     }
@@ -68,7 +68,7 @@ class ImageRelationshipsTest extends TestCase
         $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
             'passenger' => [1],
             'freight' => [],
-            'locomotive' => [],
+            'tractive' => [],
         ]]));
         $image = Image::first();
 
@@ -78,7 +78,7 @@ class ImageRelationshipsTest extends TestCase
         $this->assertCount(1, $image->passengerWagons);
         $this->assertNotEmpty($response['data']['imageables']['passenger']);
         $this->assertEmpty($response['data']['imageables']['freight']);
-        $this->assertEmpty($response['data']['imageables']['locomotive']);
+        $this->assertEmpty($response['data']['imageables']['tractive']);
     }
 
     /**
@@ -99,7 +99,7 @@ class ImageRelationshipsTest extends TestCase
         $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
             'passenger' => [1, 2],
             'freight' => [],
-            'locomotive' => [],
+            'tractive' => [],
         ]]));
         $image = Image::first();
 
@@ -109,7 +109,7 @@ class ImageRelationshipsTest extends TestCase
         $this->assertCount(2, $image->passengerWagons);
         $this->assertNotEmpty($response['data']['imageables']['passenger']);
         $this->assertEmpty($response['data']['imageables']['freight']);
-        $this->assertEmpty($response['data']['imageables']['locomotive']);
+        $this->assertEmpty($response['data']['imageables']['tractive']);
     }
 
     /**
@@ -134,7 +134,7 @@ class ImageRelationshipsTest extends TestCase
         $response = $this->patch('api/images/' . $image->id, array_merge($this->data, ['imageables' => [
             'passenger' => [1],
             'freight' => [],
-            'locomotive' => [],
+            'tractive' => [],
         ]]));
         $image = Image::first();
 
@@ -143,7 +143,7 @@ class ImageRelationshipsTest extends TestCase
         $response->assertStatus(Response::HTTP_OK);
         $this->assertNotEmpty($response['data']['imageables']['passenger']);
         $this->assertEmpty($response['data']['imageables']['freight']);
-        $this->assertEmpty($response['data']['imageables']['locomotive']);
+        $this->assertEmpty($response['data']['imageables']['tractive']);
     }
 
     /**
@@ -179,7 +179,7 @@ class ImageRelationshipsTest extends TestCase
         $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
             'passenger' => [2],
             'freight' => [],
-            'locomotive' => [],
+            'tractive' => [],
         ]]));
         $response->assertSessionHasErrors('imageables');
     }
@@ -201,7 +201,7 @@ class ImageRelationshipsTest extends TestCase
         $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
             'passenger' => [],
             'freight' => [1],
-            'locomotive' => [],
+            'tractive' => [],
         ]]));
         $image = Image::first();
 
@@ -211,7 +211,7 @@ class ImageRelationshipsTest extends TestCase
         $this->assertCount(1, $image->freightWagons);
         $this->assertEmpty($response['data']['imageables']['passenger']);
         $this->assertNotEmpty($response['data']['imageables']['freight']);
-        $this->assertEmpty($response['data']['imageables']['locomotive']);
+        $this->assertEmpty($response['data']['imageables']['tractive']);
     }
 
     /**
@@ -232,7 +232,7 @@ class ImageRelationshipsTest extends TestCase
         $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
             'passenger' => [],
             'freight' => [1, 2],
-            'locomotive' => [],
+            'tractive' => [],
         ]]));
         $image = Image::first();
 
@@ -242,7 +242,7 @@ class ImageRelationshipsTest extends TestCase
         $this->assertCount(2, $image->freightWagons);
         $this->assertEmpty($response['data']['imageables']['passenger']);
         $this->assertNotEmpty($response['data']['imageables']['freight']);
-        $this->assertEmpty($response['data']['imageables']['locomotive']);
+        $this->assertEmpty($response['data']['imageables']['tractive']);
     }
 
     /**
@@ -267,7 +267,7 @@ class ImageRelationshipsTest extends TestCase
         $response = $this->patch('api/images/' . $image->id, array_merge($this->data, ['imageables' => [
             'passenger' => [],
             'freight' => [1],
-            'locomotive' => [],
+            'tractive' => [],
         ]]));
         $image = Image::first();
 
@@ -276,6 +276,101 @@ class ImageRelationshipsTest extends TestCase
         $response->assertStatus(Response::HTTP_OK);
         $this->assertEmpty($response['data']['imageables']['passenger']);
         $this->assertNotEmpty($response['data']['imageables']['freight']);
-        $this->assertEmpty($response['data']['imageables']['locomotive']);
+        $this->assertEmpty($response['data']['imageables']['tractive']);
+    }
+
+    /**
+     * Test tractive unit can be assigned to image.
+     *
+     * @return void
+     */
+    public function testTractiveUnitCanBeAssignedToImage()
+    {
+        $this->withoutExceptionHandling();
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync(1);
+
+        $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
+            'passenger' => [],
+            'freight' => [],
+            'tractive' => [1],
+        ]]));
+        $image = Image::first();
+
+        $this->assertCount(1, Image::all());
+        $response->assertStatus(Response::HTTP_CREATED);
+
+        $this->assertCount(1, $image->tractiveUnits);
+        $this->assertEmpty($response['data']['imageables']['passenger']);
+        $this->assertEmpty($response['data']['imageables']['freight']);
+        $this->assertNotEmpty($response['data']['imageables']['tractive']);
+    }
+
+    /**
+     * Test tractive units can be assigned to image.
+     *
+     * @return void
+     */
+    public function testTractiveUnitsCanBeAssignedToImage()
+    {
+        TractiveUnit::factory()->create();
+
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync(1);
+
+        $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
+            'passenger' => [],
+            'freight' => [],
+            'tractive' => [1, 2],
+        ]]));
+        $image = Image::first();
+
+        $this->assertCount(1, Image::all());
+        $response->assertStatus(Response::HTTP_CREATED);
+
+        $this->assertCount(2, $image->tractiveUnits);
+        $this->assertEmpty($response['data']['imageables']['passenger']);
+        $this->assertEmpty($response['data']['imageables']['freight']);
+        $this->assertNotEmpty($response['data']['imageables']['tractive']);
+    }
+
+    /**
+     * Test tractive unit can be updated on image.
+     *
+     * @return void
+     */
+    public function testTractiveUnitCanBeUpdatedOnImage()
+    {
+        $this->withoutExceptionHandling();
+        Sanctum::actingAs(
+            $this->user,
+            ['*']
+        );
+        $this->user->roles[0]->permissions()->sync([2]);
+        $image = Image::factory()
+            ->hasAttached(
+                TractiveUnit::factory()->count(1)
+            )
+            ->create();
+
+        $response = $this->patch('api/images/' . $image->id, array_merge($this->data, ['imageables' => [
+            'passenger' => [],
+            'freight' => [],
+            'tractive' => [1],
+        ]]));
+        $image = Image::first();
+
+        $this->assertEquals($this->data['title'], $image->title);
+        $this->assertEquals(1, $image->tractiveUnits()->first()->id);
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertEmpty($response['data']['imageables']['passenger']);
+        $this->assertEmpty($response['data']['imageables']['freight']);
+        $this->assertNotEmpty($response['data']['imageables']['tractive']);
     }
 }

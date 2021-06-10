@@ -45,7 +45,7 @@ class ImageTest extends TestCase
             'imageables' => [
                 'passenger' => [1],
                 'freight' => [],
-                'locomotive' => [],
+                'tractive' => [],
             ],
         ];
     }

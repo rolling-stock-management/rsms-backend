@@ -8,6 +8,7 @@ use App\Http\Resources\ImageResource;
 use App\Models\FreightWagon;
 use App\Models\Image;
 use App\Models\PassengerWagon;
+use App\Models\TractiveUnit;
 use App\Rules\ImageablesArrayRules;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -65,6 +66,11 @@ class ImageController extends Controller
             $image->freightWagons()->save($wagon);
         }
 
+        foreach ($data['imageables']['tractive'] as &$item) {
+            $wagon = TractiveUnit::find($item);
+            $image->tractiveUnits()->save($wagon);
+        }
+
         return (new ImageResource($image))
             ->response()
             ->setStatusCode(Response::HTTP_CREATED);
@@ -102,6 +108,12 @@ class ImageController extends Controller
         foreach ($data['imageables']['freight'] as &$item) {
             $wagon = FreightWagon::find($item);
             $image->freightWagons()->save($wagon);
+        }
+
+        $image->tractiveUnits()->sync([]);
+        foreach ($data['imageables']['tractive'] as &$item) {
+            $wagon = TractiveUnit::find($item);
+            $image->tractiveUnits()->save($wagon);
         }
 
         $image->update($data);

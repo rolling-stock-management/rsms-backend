@@ -50,4 +50,12 @@ class Image extends Model
     {
         return $this->morphedByMany(FreightWagon::class, 'imageable');
     }
+
+    /**
+     * Get all of the tractive units that are assigned this image.
+     */
+    public function tractiveUnits()
+    {
+        return $this->morphedByMany(TractiveUnit::class, 'imageable');
+    }
 }

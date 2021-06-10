@@ -30,7 +30,7 @@ class ImageablesArrayRules implements Rule
     {
         //TODO: Refactoring possibilities.
         //Check if there is at least one id in the arrays (i.e. at leas one is not empty)
-        $isPresent = !empty($value['passenger']) || !empty($value['freight']) || !empty($value['locomotive']);
+        $isPresent = !empty($value['passenger']) || !empty($value['freight']) || !empty($value['tractive']);
         if(!$isPresent) return false;
 
         //Check if passenger wagons ids exist
@@ -47,7 +47,7 @@ class ImageablesArrayRules implements Rule
 
         //Check if tractive units ids exist
         $locomotiveValidIds = true;
-        foreach ($value['locomotive'] as &$item) {
+        foreach ($value['tractive'] as &$item) {
             $locomotiveValidIds = $locomotiveValidIds && TractiveUnit::find($item);
         }
 

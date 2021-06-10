@@ -24,7 +24,7 @@ class ImageResource extends JsonResource
                 'imageables' => [
                     'passenger' => $this->passengerWagons,
                     'freight' => $this->freightWagons,
-                    'locomotive' => [],
+                    'tractive' => $this->tractiveUnits,
                 ],
                 'last_updated' => $this->updated_at->format('d.m.Y h:i:s')
             ]

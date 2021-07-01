@@ -28,26 +28,27 @@ class ImageablesArrayRules implements Rule
      */
     public function passes($attribute, $value)
     {
+        $data = json_decode($value);
         //TODO: Refactoring possibilities.
         //Check if there is at least one id in the arrays (i.e. at leas one is not empty)
-        $isPresent = !empty($value['passenger']) || !empty($value['freight']) || !empty($value['tractive']);
+        $isPresent = !empty($data->passenger) || !empty($data->freight) || !empty($data->tractive);
         if(!$isPresent) return false;
 
         //Check if passenger wagons ids exist
         $passengerValidIds = true;
-        foreach ($value['passenger'] as &$item) {
+        foreach ($data->passenger as &$item) {
             $passengerValidIds = $passengerValidIds && PassengerWagon::find($item);
         }
 
         //Check if freight wagons ids exist
         $freightValidIds = true;
-        foreach ($value['freight'] as &$item) {
+        foreach ($data->freight as &$item) {
             $freightValidIds = $freightValidIds && FreightWagon::find($item);
         }
 
         //Check if tractive units ids exist
         $locomotiveValidIds = true;
-        foreach ($value['tractive'] as &$item) {
+        foreach ($data->tractive as &$item) {
             $locomotiveValidIds = $locomotiveValidIds && TractiveUnit::find($item);
         }
 

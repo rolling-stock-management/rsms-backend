@@ -56,17 +56,18 @@ class ImageController extends Controller
         $image = Image::create($data);
         ImageHelper::storeImageAndCreateThumbnail($fileContents, 500, 500);
 
-        foreach ($data['imageables']['passenger'] as &$item) {
+        $data['imageables'] =  json_decode($data['imageables']);
+        foreach ($data['imageables']->passenger as &$item) {
             $wagon = PassengerWagon::find($item);
             $image->passengerWagons()->save($wagon);
         }
 
-        foreach ($data['imageables']['freight'] as &$item) {
+        foreach ($data['imageables']->freight as &$item) {
             $wagon = FreightWagon::find($item);
             $image->freightWagons()->save($wagon);
         }
 
-        foreach ($data['imageables']['tractive'] as &$item) {
+        foreach ($data['imageables']->tractive as &$item) {
             $wagon = TractiveUnit::find($item);
             $image->tractiveUnits()->save($wagon);
         }
@@ -97,21 +98,22 @@ class ImageController extends Controller
     public function update(Request $request, Image $image)
     {
         $data = $this->validateRequest();
+        $data['imageables'] = json_decode($data['imageables']);
 
         $image->passengerWagons()->sync([]);
-        foreach ($data['imageables']['passenger'] as &$item) {
+        foreach ($data['imageables']->passenger as &$item) {
             $wagon = PassengerWagon::find($item);
             $image->passengerWagons()->save($wagon);
         }
 
         $image->freightWagons()->sync([]);
-        foreach ($data['imageables']['freight'] as &$item) {
+        foreach ($data['imageables']->freight as &$item) {
             $wagon = FreightWagon::find($item);
             $image->freightWagons()->save($wagon);
         }
 
         $image->tractiveUnits()->sync([]);
-        foreach ($data['imageables']['tractive'] as &$item) {
+        foreach ($data['imageables']->tractive as &$item) {
             $wagon = TractiveUnit::find($item);
             $image->tractiveUnits()->save($wagon);
         }

@@ -43,11 +43,11 @@ class ImageRelationshipsTest extends TestCase
             'description' => $image->description,
             'date' => "2020-11-21",
             'file' => $file,
-            'imageables' => [
+            'imageables' => json_encode([
                 'passenger' => [],
                 'freight' => [],
                 'tractive' => [],
-            ],
+            ]),
         ];
     }
 
@@ -65,11 +65,11 @@ class ImageRelationshipsTest extends TestCase
         );
         $this->user->roles[0]->permissions()->sync(1);
 
-        $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
+        $response = $this->post('api/images', array_merge($this->data, ['imageables' => json_encode([
             'passenger' => [1],
             'freight' => [],
             'tractive' => [],
-        ]]));
+        ])]));
         $image = Image::first();
 
         $this->assertCount(1, Image::all());
@@ -96,11 +96,11 @@ class ImageRelationshipsTest extends TestCase
         );
         $this->user->roles[0]->permissions()->sync(1);
 
-        $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
+        $response = $this->post('api/images', array_merge($this->data, ['imageables' => json_encode([
             'passenger' => [1, 2],
             'freight' => [],
             'tractive' => [],
-        ]]));
+        ])]));
         $image = Image::first();
 
         $this->assertCount(1, Image::all());
@@ -131,11 +131,11 @@ class ImageRelationshipsTest extends TestCase
             )
             ->create();
 
-        $response = $this->patch('api/images/' . $image->id, array_merge($this->data, ['imageables' => [
+        $response = $this->patch('api/images/' . $image->id, array_merge($this->data, ['imageables' => json_encode([
             'passenger' => [1],
             'freight' => [],
             'tractive' => [],
-        ]]));
+        ])]));
         $image = Image::first();
 
         $this->assertEquals($this->data['title'], $image->title);
@@ -176,11 +176,11 @@ class ImageRelationshipsTest extends TestCase
         );
         $this->user->roles[0]->permissions()->sync(1);
 
-        $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
+        $response = $this->post('api/images', array_merge($this->data, ['imageables' => json_encode([
             'passenger' => [2],
             'freight' => [],
             'tractive' => [],
-        ]]));
+        ])]));
         $response->assertSessionHasErrors('imageables');
     }
 
@@ -198,11 +198,11 @@ class ImageRelationshipsTest extends TestCase
         );
         $this->user->roles[0]->permissions()->sync(1);
 
-        $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
+        $response = $this->post('api/images', array_merge($this->data, ['imageables' => json_encode([
             'passenger' => [],
             'freight' => [1],
             'tractive' => [],
-        ]]));
+        ])]));
         $image = Image::first();
 
         $this->assertCount(1, Image::all());
@@ -229,11 +229,11 @@ class ImageRelationshipsTest extends TestCase
         );
         $this->user->roles[0]->permissions()->sync(1);
 
-        $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
+        $response = $this->post('api/images', array_merge($this->data, ['imageables' => json_encode([
             'passenger' => [],
             'freight' => [1, 2],
             'tractive' => [],
-        ]]));
+        ])]));
         $image = Image::first();
 
         $this->assertCount(1, Image::all());
@@ -264,11 +264,11 @@ class ImageRelationshipsTest extends TestCase
             )
             ->create();
 
-        $response = $this->patch('api/images/' . $image->id, array_merge($this->data, ['imageables' => [
+        $response = $this->patch('api/images/' . $image->id, array_merge($this->data, ['imageables' => json_encode([
             'passenger' => [],
             'freight' => [1],
             'tractive' => [],
-        ]]));
+        ])]));
         $image = Image::first();
 
         $this->assertEquals($this->data['title'], $image->title);
@@ -293,11 +293,11 @@ class ImageRelationshipsTest extends TestCase
         );
         $this->user->roles[0]->permissions()->sync(1);
 
-        $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
+        $response = $this->post('api/images', array_merge($this->data, ['imageables' => json_encode([
             'passenger' => [],
             'freight' => [],
             'tractive' => [1],
-        ]]));
+        ])]));
         $image = Image::first();
 
         $this->assertCount(1, Image::all());
@@ -324,11 +324,11 @@ class ImageRelationshipsTest extends TestCase
         );
         $this->user->roles[0]->permissions()->sync(1);
 
-        $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
+        $response = $this->post('api/images', array_merge($this->data, ['imageables' => json_encode([
             'passenger' => [],
             'freight' => [],
             'tractive' => [1, 2],
-        ]]));
+        ])]));
         $image = Image::first();
 
         $this->assertCount(1, Image::all());
@@ -359,11 +359,11 @@ class ImageRelationshipsTest extends TestCase
             )
             ->create();
 
-        $response = $this->patch('api/images/' . $image->id, array_merge($this->data, ['imageables' => [
+        $response = $this->patch('api/images/' . $image->id, array_merge($this->data, ['imageables' => json_encode([
             'passenger' => [],
             'freight' => [],
             'tractive' => [1],
-        ]]));
+        ])]));
         $image = Image::first();
 
         $this->assertEquals($this->data['title'], $image->title);
@@ -390,11 +390,11 @@ class ImageRelationshipsTest extends TestCase
         );
         $this->user->roles[0]->permissions()->sync(1);
 
-        $response = $this->post('api/images', array_merge($this->data, ['imageables' => [
+        $response = $this->post('api/images', array_merge($this->data, ['imageables' => json_encode([
             'passenger' => [1],
             'freight' => [1, 2],
             'tractive' => [1, 2],
-        ]]));
+        ])]));
         $image = Image::first();
 
         $this->assertCount(1, Image::all());

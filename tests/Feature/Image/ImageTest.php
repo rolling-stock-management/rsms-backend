@@ -42,11 +42,11 @@ class ImageTest extends TestCase
             'description' => $image->description,
             'date' => "2020-11-21",
             'file' => $file,
-            'imageables' => [
+            'imageables' => json_encode([
                 'passenger' => [1],
                 'freight' => [],
                 'tractive' => [],
-            ],
+            ]),
         ];
     }
 

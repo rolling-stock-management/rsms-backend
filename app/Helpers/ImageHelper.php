@@ -56,7 +56,7 @@ class ImageHelper
         $fileName = ImageHelper::generateFilename($file);
 
         //Resize
-        if ($width > $height) {
+        if ($image->width() > $image->height()) {
             ImageHelper::resizeToHeight($image, $height);
         } else {
             ImageHelper::resizeToWidth($image, $width);

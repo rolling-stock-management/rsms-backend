@@ -25,7 +25,7 @@ class ImageHelper
         Storage::putFileAs('images', $file, $fileName);
 
         //Create thumbnail
-        ImageHelper::createThumbnailFromImage($file, $width, $height);
+        ImageHelper::createThumbnailFromImage($file, $width, $height, $fileName);
 
         //Return whether images are saved.
         return Storage::disk('local')->exists('images/' . $fileName) && Storage::disk('local')->exists('images/thumbnails/' . $fileName);
@@ -48,12 +48,12 @@ class ImageHelper
      * @param $file
      * @param int $width
      * @param int $height
+     * @param string $fileName
      */
-    public static function createThumbnailFromImage($file, int $width, int $height): void
+    public static function createThumbnailFromImage($file, int $width, int $height, string $fileName): void
     {
         $image = ImageManagerStatic::make($file);
         $type = $image->mime();
-        $fileName = ImageHelper::generateFilename($file);
 
         //Resize
         if ($image->width() > $image->height()) {
